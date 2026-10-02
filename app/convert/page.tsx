@@ -86,11 +86,16 @@ export default function Page() {
       </div>
 
       {/* Uploads */}
-      <div className="bg-black/5 w-full p-6 flex flex-col gap-6">
-        {uploads
-          ? uploads.map((upload, i) => <ConvertUploadItem key={i} upload={upload} />)
-          : null}
-      </div>
+
+      {
+        uploads
+          ? (
+            <div className="bg-black/5 w-full p-6 flex flex-col gap-6">
+              {uploads.map((upload, i) => <ConvertUploadItem key={i} upload={upload} />)}
+            </div>
+          )
+          : null
+      }
 
       <div {...dropzone.getRootProps({
         className: cn("border border-dotted border-neutral-400 p-24 text-neutral-400 cursor-pointer flex flex-col items-center justify-center gap-6",

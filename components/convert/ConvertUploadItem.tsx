@@ -1,4 +1,4 @@
-import { fileIcon } from "@/lib/utils";
+import { fileIcon, formatFileSize } from "@/lib/utils";
 
 type TConvertUploadItemProps = {
   upload: File;
@@ -19,7 +19,7 @@ export default function ConvertUploadItem({ upload }: TConvertUploadItemProps) {
       {/* to dropdown */}
 
       {/* filesize */}
-      <span className="tabular-nums">{upload.size}</span>
+      <span className="tabular-nums">{formatFileSize(upload.size)}</span>
 
       {/* 'X' remove. might require cb() */}
     </div>
