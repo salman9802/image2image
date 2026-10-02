@@ -79,7 +79,7 @@ export default function Page() {
   // }
 
   return (
-    <div className="py-24 w-11/12 max-w-xl  min-h-screen mx-auto flex flex-col justify-center items-center gap-y-32 md:max-w-2xl lg:max-w-3xl">
+    <div className="py-24 w-11/12 max-w-xl  min-h-screen mx-auto flex flex-col justify-center items-center gap-y-12 md:max-w-2xl lg:max-w-3xl">
       <div className="flex flex-col gap-2 items-center">
         <h1 className="font-semibold text-primary text-xl md:text-2xl lg:text-3xl">File Converter</h1>
         <p>Convert your images to any supported format.</p>
