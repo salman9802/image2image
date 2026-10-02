@@ -1,3 +1,4 @@
+import { PiFileFill, PiFileJpgFill, PiFilePngFill } from "react-icons/pi";
 import { TbFileTypePng } from "react-icons/tb";
 
 export { cn } from "cn";
@@ -42,24 +43,22 @@ export function formatFileSize(filesize: number) {
 export function fileIcon(mimeType: string) {
   switch (mimeType) {
     case "image/png":
-      return <TbFileTypePng />;
-    case "image/png":
-      break;
-    case "image/png":
-      break;
-    case "image/png":
-      break;
-    case "image/png":
-      break;
-    case "image/png":
-      break;
-    case "image/png":
-      break;
-    case "image/png":
-      break;
-    case "image/png":
-      break;
+      return <PiFilePngFill className="size-5 text-primary" />;
+    case "image/jpg":
+      return <PiFileJpgFill className="size-5 text-primary" />;
+    case "image/jpeg":
+      return <PiFileJpgFill className="size-5 text-primary" />;
+    case "image/pjpeg":
+      return <PiFileJpgFill className="size-5 text-primary" />;
+    case "image/webp":
+      return <PiFileFill className="size-5 text-primary" />;
+    case "image/bmp":
+      return <PiFileFill className="size-5 text-primary" />;
+    case "image/x-ms-bmp":
+      return <PiFileFill className="size-5 text-primary" />;
+    case "image/gif":
+      return <PiFileFill className="size-5 text-primary" />;
     default:
-      break;
+      return <PiFileFill className="size-5 text-primary" />;
   }
 }
