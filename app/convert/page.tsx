@@ -7,6 +7,7 @@ import { cn, downloadBlob, fileIcon } from "@/lib/utils";
 import { Check, File, ImageUp, Upload, X } from "lucide-react";
 import React from "react";
 import { useDropzone } from "react-dropzone";
+import { FaFileUpload } from "react-icons/fa";
 
 export default function Page() {
 
@@ -126,18 +127,23 @@ export default function Page() {
 
 
       {/* Global Drag aware overlay */}
+
       {
         dropzone.isDragGlobal && !dropzone.isDragActive && (
           <div {...globalDropzone.getRootProps({
-            className: "absolute inset-0 backdrop-blur-md flex flex-col items-center justify-center"
+            className: "absolute inset-0 backdrop-blur-md flex flex-col items-center justify-center bg-primary/10"
           })}>
             <input {...globalDropzone.getInputProps()} />
-            <div className="text-center p-32 bg-white w-11/12 md:w-2/3 lg:w-1/2">
-              Drop files anywhere on this page...
+            <div className="flex flex-col items-center gap-6 bg-white/50 p-32 w-11/12 md:w-2/3 lg:w-1/2">
+              <FaFileUpload className="size-12 text-primary/70" />
+              <div className="text-center text-neutral-600">
+                Drop files anywhere on this page...
+              </div>
+
+              {dropzone.isDragReject && (
+                <p className="text-red-500 px-4 py-2 bg-red-500/10 border border-red-500">Some files will be rejected</p>
+              )}
             </div>
-            {dropzone.isDragReject && (
-              <p className="text-red-500 px-4 py-2 bg-red-500/10 border border-red-500">Some files will be rejected</p>
-            )}
           </div>
         )
       }
