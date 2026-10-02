@@ -1,13 +1,15 @@
 import { fileIcon, formatFileSize } from "@/lib/utils";
+import { X } from "lucide-react";
 
 type TConvertUploadItemProps = {
   upload: File;
+  removeUpload: () => any;
 }
-export default function ConvertUploadItem({ upload }: TConvertUploadItemProps) {
+export default function ConvertUploadItem({ upload, removeUpload }: TConvertUploadItemProps) {
   const mimeType = upload.type;
 
   return (
-    <div className="bg-black/5 flex justify-between px-4 py-2">
+    <div className="bg-black/5 flex justify-between items-center px-4 py-2">
       {/* Icon + Name */}
       <div className="flex gap-2 items-center">
         {/* TODO: helper to determine icon based on file mimeType */}
@@ -22,6 +24,7 @@ export default function ConvertUploadItem({ upload }: TConvertUploadItemProps) {
       <span className="tabular-nums">{formatFileSize(upload.size)}</span>
 
       {/* 'X' remove. might require cb() */}
+      <X onClick={removeUpload} className="size-5 cursor-pointer text-neutral-600" />
     </div>
   );
 }

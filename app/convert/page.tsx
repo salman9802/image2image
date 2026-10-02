@@ -88,10 +88,12 @@ export default function Page() {
       {/* Uploads */}
 
       {
-        uploads
+        (uploads && uploads.length > 0)
           ? (
             <div className="bg-black/5 w-full p-6 flex flex-col gap-6">
-              {uploads.map((upload, i) => <ConvertUploadItem key={i} upload={upload} />)}
+              {uploads.map((upload, i) => <ConvertUploadItem key={i} upload={upload} removeUpload={() => {
+                setUploads(prevUploads => prevUploads ? prevUploads.filter((u, idx) => idx !== i) : [])
+              }} />)}
             </div>
           )
           : null
