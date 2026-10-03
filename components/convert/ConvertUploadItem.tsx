@@ -1,6 +1,6 @@
 "use client";
 
-import { fileIcon, formatFileSize } from "@/lib/utils";
+import { cn, fileIcon, formatFileSize } from "@/lib/utils";
 import { ChevronDown, X } from "lucide-react";
 import { Popover, PopoverTrigger, PopoverContent, PopoverHeader, PopoverTitle, PopoverDescription, } from "../ui/popover";
 import { Button } from "../ui/button";
@@ -26,10 +26,9 @@ export default function ConvertUploadItem({ upload, onFormatSelect, removeUpload
   }, [selectedFormatConfig]);
 
   return (
-    <div className="bg-black/5 flex justify-between items-center px-4 py-2">
+    <div className="bg-white flex justify-between items-center px-6 py-4">
       {/* Icon + Name */}
       <div className="flex-1 flex gap-2 items-center">
-        {/* TODO: helper to determine icon based on file mimeType */}
         {fileIcon(mimeType)}
         {/* <File className="size-4" /> */}
         <span>{upload.name}</span>
@@ -39,7 +38,8 @@ export default function ConvertUploadItem({ upload, onFormatSelect, removeUpload
       <div className="flex-1 flex items-center gap-4">
         <span className="text-neutral-600">to</span>
         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
-          <PopoverTrigger render={<Button variant="outline" className="bg-primary/5 border-primary" />}>
+          <PopoverTrigger render={<Button variant="outline" className={cn("border-primary text-primary",
+            selectedFormatConfig && "bg-primary/5 border-none")} />}>
             {
               selectedFormatConfig
                 ? <span>{selectedFormatConfig.extensions[0]}</span>

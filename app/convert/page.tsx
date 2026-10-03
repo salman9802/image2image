@@ -89,7 +89,6 @@ export default function Page() {
       </div>
 
       {/* Uploads */}
-
       {
         (uploads && uploads.length > 0)
           ? (
@@ -111,7 +110,7 @@ export default function Page() {
       }
 
       <div {...dropzone.getRootProps({
-        className: cn("border border-dotted border-neutral-400 p-24 text-neutral-400 cursor-pointer flex flex-col items-center justify-center gap-6",
+        className: cn("w-full border border-dotted border-neutral-400 p-24 text-neutral-400 cursor-pointer flex flex-col items-center justify-center gap-6",
           // Keyboard focus
           dropzone.isFocused && "border-primary bg-primary/5",
           // Valid file being dragged over
@@ -132,6 +131,7 @@ export default function Page() {
 
         <p>Drag 'n' drop some files here, or click to select files</p>
       </div>
+
       {/* <h4>Accepted files</h4> */}
       {/* <div className="flex flex-col gap-2">{acceptedFileItems}</div> */}
 
@@ -143,9 +143,11 @@ export default function Page() {
         </aside>
       )}
 
+      <div className="w-full flex items-center justify-center">
+        <Button className="flex-1">Convert</Button>
+      </div>
 
       {/* Global Drag aware overlay */}
-
       {
         dropzone.isDragGlobal && !dropzone.isDragActive && (
           <div {...globalDropzone.getRootProps({
