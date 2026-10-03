@@ -29,9 +29,66 @@ export const canvasDecode: TDecoder = (file) => createImageBitmap(file);
 export const canvasEncode = (mimeType: string): TEncoder => (canvas, quality) => canvas.convertToBlob({ type: mimeType, quality });
 
 
+// Draws either an ImageBitmap or raw ImageData onto a fresh canvas.
 export function drawToCanvas(decoded: TDecodedImage): OffscreenCanvas {
   const canvas = new OffscreenCanvas(decoded.width, decoded.height);
+  const ctx = canvas.getContext("2d");
+  if (ctx == null) throw Error("Error: Failed to retrieve canvas context in drawToCanvas()");
+  if (decoded instanceof ImageData) {
+    ctx.putImageData(decoded, 0, 0);
+  } else {
+    ctx.drawImage(decoded, 0, 0);
+  }
+  return canvas;
 }
 
+
+// ========================= Format Configuration Registry =========================
+
+export const FORMATS: Record<string, TFormatConfig> = {
+  jpeg: {
+    id: "jpeg",
+    label: "JPEG",
+    extensions: ["jpg", "jpeg"],
+    mimeTypes: ["image/jpeg"],
+    decode: canvasDecode,
+    encode: canvasEncode("image/jpeg"),
+    supportsQuality: true,
+  },
+  png: {
+    id: "png",
+    label: "PNG",
+    extensions: ["png"],
+    mimeTypes: ["image/png"],
+    decode: canvasDecode,
+    encode: canvasEncode("image/png"),
+    supportsQuality: true
+  },
+  webp: {
+    id: "webp",
+    label: "WebP",
+    extensions: ["webp"],
+    mimeTypes: ["image/webp"],
+    decode: canvasDecode,
+    encode: canvasEncode("image/webp"),
+    supportsQuality: true,
+  },
+  bmp: {
+    id: "bmp",
+    label: "BMP",
+    extensions: ["bmp"],
+    mimeTypes: ["image/bmp"],
+    decode: canvasDecode,
+    // no encode, BMP is input-only here
+  },
+  gif: {
+    id: "gif",
+    label: "GIF",
+    extensions: ["gif"],
+    mimeTypes: ["image/gif"],
+    decode: canvasDecode,
+    // no encode, static-frame-only, no animated GIF support in MVP
+  },
+} as const;
 
 
