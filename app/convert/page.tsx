@@ -9,6 +9,7 @@ import { TConvertComponentState } from "@/types/convert.type";
 import { Check, File, ImageUp, Upload, X } from "lucide-react";
 import React from "react";
 import { useDropzone } from "react-dropzone";
+import { CgSpinner } from "react-icons/cg";
 import { FaFileUpload } from "react-icons/fa";
 
 export default function Page() {
@@ -18,7 +19,6 @@ export default function Page() {
   const [uploads, setUploads] = React.useState<File[]>();
 
   const handleDrop = React.useCallback((acceptedFiles: File[]) => {
-    console.log("acceptedFiles: ", acceptedFiles);
     setUploads(acceptedFiles);
   }, []);
 
@@ -152,7 +152,16 @@ export default function Page() {
       )}
 
       <div className="w-full flex items-center justify-center">
-        <Button onClick={handleConvert} className="flex-1">Convert</Button>
+        <Button disabled={state !== "idle"} onClick={handleConvert} className="flex-1">
+          {
+            state === "idle"
+              ? <span>Convert</span>
+              : <>
+                <CgSpinner className="animate-spin" />
+                <span>Processing...</span>
+              </>
+          }
+        </Button>
       </div>
 
       {/* Global Drag aware overlay */}

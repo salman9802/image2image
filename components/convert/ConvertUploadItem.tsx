@@ -39,7 +39,7 @@ export default function ConvertUploadItem({ state, upload, onFormatSelect, remov
 
         const blob = await convertToImage(upload, sourceFormatConfig, selectedFormatConfig);
         setOutput(blob);
-        const filename = upload.name.split(".").slice(0, -2).join(".");
+        const filename = upload.name.split(".").slice(-1).join(".");
         downloadBlob(blob, `${filename}.${selectedFormatConfig.extensions[0]}`);
       })();
     }
