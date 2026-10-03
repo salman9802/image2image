@@ -34,7 +34,6 @@ export default function Page() {
     accept: DROPZONE_ACCEPTED_FILES,
     onDrop: handleDrop
   });
-  console.log("DROPZONE_ACCEPTED_FILES: ", DROPZONE_ACCEPTED_FILES);
 
   const acceptedFileItems = dropzone.acceptedFiles.map(file => (
     <div key={file.path} className="px-4 py-2 border border-green-500 bg-green-500/30 flex items-center gap-2">
@@ -95,9 +94,17 @@ export default function Page() {
         (uploads && uploads.length > 0)
           ? (
             <div className="bg-black/5 w-full p-6 flex flex-col gap-6">
-              {uploads.map((upload, i) => <ConvertUploadItem key={i} upload={upload} removeUpload={() => {
-                setUploads(prevUploads => prevUploads ? prevUploads.filter((u, idx) => idx !== i) : [])
-              }} />)}
+              {uploads.map((upload, i) => <ConvertUploadItem
+                key={i}
+                upload={upload}
+                removeUpload={() => {
+                  setUploads(prevUploads => prevUploads ? prevUploads.filter((u, idx) => idx !== i) : [])
+                }}
+                onFormatSelect={() => {
+                  // TODO: 
+                }}
+              />
+              )}
             </div>
           )
           : null
