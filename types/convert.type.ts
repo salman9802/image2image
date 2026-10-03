@@ -4,3 +4,5 @@ export type TConvertParams = {
   targetFormat: string;
   quality?: number;
 }
+
+export type TConvertComponentState = "idle" | "processing";

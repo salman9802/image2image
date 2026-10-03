@@ -33,7 +33,7 @@ export const canvasEncode = (mimeType: string): TEncoder => (canvas, quality) =>
 export function drawToCanvas(decoded: TDecodedImage): OffscreenCanvas {
   const canvas = new OffscreenCanvas(decoded.width, decoded.height);
   const ctx = canvas.getContext("2d");
-  if (ctx == null) throw Error("Error: Failed to retrieve canvas context in drawToCanvas()");
+  if (ctx == null) throw new Error("Error: Failed to retrieve canvas context in drawToCanvas()");
   if (decoded instanceof ImageData) {
     ctx.putImageData(decoded, 0, 0);
   } else {

@@ -5,12 +5,15 @@ import { Button } from "@/components/ui/button";
 import { convert } from "@/lib/convert";
 import { DROPZONE_ACCEPTED_FILES } from "@/lib/formats";
 import { cn, downloadBlob, fileIcon } from "@/lib/utils";
+import { TConvertComponentState } from "@/types/convert.type";
 import { Check, File, ImageUp, Upload, X } from "lucide-react";
 import React from "react";
 import { useDropzone } from "react-dropzone";
 import { FaFileUpload } from "react-icons/fa";
 
 export default function Page() {
+
+  const [state, setState] = React.useState<TConvertComponentState>("idle");
 
   const [uploads, setUploads] = React.useState<File[]>();
 
@@ -81,6 +84,10 @@ export default function Page() {
   //   }
   // }
 
+  const handleConvert = () => {
+    setState("processing");
+  }
+
   return (
     <div className="py-24 w-11/12 max-w-xl  min-h-screen mx-auto flex flex-col justify-center items-center gap-y-12 md:max-w-2xl lg:max-w-3xl">
       <div className="flex flex-col gap-2 items-center">
@@ -95,6 +102,7 @@ export default function Page() {
             <div className="bg-black/5 w-full p-6 flex flex-col gap-6">
               {uploads.map((upload, i) => <ConvertUploadItem
                 key={i}
+                state={state}
                 upload={upload}
                 removeUpload={() => {
                   setUploads(prevUploads => prevUploads ? prevUploads.filter((u, idx) => idx !== i) : [])
@@ -144,7 +152,7 @@ export default function Page() {
       )}
 
       <div className="w-full flex items-center justify-center">
-        <Button className="flex-1">Convert</Button>
+        <Button onClick={handleConvert} className="flex-1">Convert</Button>
       </div>
 
       {/* Global Drag aware overlay */}
