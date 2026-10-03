@@ -11,7 +11,7 @@ export default function ConvertUploadItem({ upload, removeUpload }: TConvertUplo
   return (
     <div className="bg-black/5 flex justify-between items-center px-4 py-2">
       {/* Icon + Name */}
-      <div className="flex gap-2 items-center">
+      <div className="flex-1 flex gap-2 items-center">
         {/* TODO: helper to determine icon based on file mimeType */}
         {fileIcon(mimeType)}
         {/* <File className="size-4" /> */}
@@ -21,7 +21,7 @@ export default function ConvertUploadItem({ upload, removeUpload }: TConvertUplo
       {/* to dropdown */}
 
       {/* filesize */}
-      <span className="tabular-nums">{formatFileSize(upload.size)}</span>
+      <span className="flex-1 tabular-nums">{formatFileSize(upload.size)}</span>
 
       {/* 'X' remove. might require cb() */}
       <X onClick={removeUpload} className="size-5 cursor-pointer text-neutral-600" />

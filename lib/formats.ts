@@ -92,3 +92,12 @@ export const FORMATS: Record<string, TFormatConfig> = {
 } as const;
 
 
+export const DROPZONE_ACCEPTED_FILES = Object.keys(FORMATS).filter(format => FORMATS[format].encode !== undefined).map(format => {
+  // TODO: 
+  const formatConfig = FORMATS[format];
+  let acceptedFiles: any = {};
+  formatConfig.mimeTypes.map(mimeType => acceptedFiles[mimeType] = formatConfig.extensions.map(ext => `.${ext}`));
+
+  return acceptedFiles;
+});
+

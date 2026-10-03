@@ -3,6 +3,7 @@
 import ConvertUploadItem from "@/components/convert/ConvertUploadItem";
 import { Button } from "@/components/ui/button";
 import { convert } from "@/lib/convert";
+import { DROPZONE_ACCEPTED_FILES } from "@/lib/formats";
 import { cn, downloadBlob, fileIcon } from "@/lib/utils";
 import { Check, File, ImageUp, Upload, X } from "lucide-react";
 import React from "react";
@@ -19,18 +20,21 @@ export default function Page() {
   }, []);
 
   const dropzone = useDropzone({
-    accept: {
-      "image/*": [".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif"]
-    },
+    // accept: {
+    //   "image/*": [".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif"]
+    // },
+    accept: DROPZONE_ACCEPTED_FILES,
     onDrop: handleDrop
   });
 
   const globalDropzone = useDropzone({
-    accept: {
-      "image/*": [".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif"]
-    },
+    // accept: {
+    //   "image/*": [".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif"]
+    // },
+    accept: DROPZONE_ACCEPTED_FILES,
     onDrop: handleDrop
   });
+  console.log("DROPZONE_ACCEPTED_FILES: ", DROPZONE_ACCEPTED_FILES);
 
   const acceptedFileItems = dropzone.acceptedFiles.map(file => (
     <div key={file.path} className="px-4 py-2 border border-green-500 bg-green-500/30 flex items-center gap-2">
