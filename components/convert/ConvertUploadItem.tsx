@@ -96,7 +96,13 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
       </div>
 
       {/* state */}
-      <span className="flex-1 uppercase text-center">{upload.state}</span>
+      <span className={cn("flex-1 uppercase text-center font-semibold",
+        {
+          "text-orange-500": upload.state === "waiting",
+          "text-primary": upload.state === "ready",
+          "text-green-500": upload.state === "finished"
+        }
+      )}>{upload.state}</span>
 
       {/* filesize */}
       <span className="flex-1 tabular-nums">{formatFileSize(upload.file.size)}</span>
@@ -108,7 +114,7 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
             <IoMdDownload
               onClick={() => {
                 if (upload.convertedBlob && targetFormatConfig) {
-                  const filename = upload.file.name.split(".").slice(-1).join(".");
+                  const filename = upload.file.name.split(".").slice(0, -1).join(".");
                   downloadBlob(upload.convertedBlob, `${filename}.${targetFormatConfig.extensions[0]}`);
                 } else {
                   alert("Something went wrong. Please refresh the page and try again.");
