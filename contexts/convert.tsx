@@ -4,7 +4,7 @@ import { TFormatConfig } from "@/lib/formats";
 import React from "react";
 
 export type TConvertState = "idle" | "pending" | "processing" | "finished"; // State Machine
-export type TConvertUploadItemState = "waiting" | "ready" | "finished"; // State Machine
+export type TConvertUploadItemState = "waiting" | "ready" | "processing" | "finished"; // State Machine
 
 export type TConvertUploadItem = {
   id: string;

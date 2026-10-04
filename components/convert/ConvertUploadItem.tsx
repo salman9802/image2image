@@ -43,6 +43,7 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
 
   React.useEffect(() => {
     if (context.state === "processing" && upload.state === "ready") {
+      context.setUploadState(uploadId, "processing");
       (async () => {
         if (targetFormatConfig == undefined) throw new Error("Error: no target format selected for one of the uploads.");
 
@@ -83,7 +84,7 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
             </PopoverHeader>
 
             <div className="flex flex-wrap gap-x-4 gap-y-3">
-              {SUPPORTED_FORMAT_CONFIGS.map((supportedFormatConfig, i) => (
+              {SUPPORTED_FORMAT_CONFIGS.filter(config => !config.mimeTypes.includes(upload.file.type)).map((supportedFormatConfig, i) => (
                 <p onClick={() => setTargetFormatConfig(supportedFormatConfig)} key={i} className="cursor-pointer bg-primary/5 px-4 py-2 text-primary font-mono">
                   {supportedFormatConfig.extensions[0]}
                   {/* {supportedFormatConfig.extensions.reduce((prev, curr) => `${ prev } / ${ curr }`, "").slice(0)} */}
@@ -99,6 +100,7 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
       <span className={cn("flex-1 uppercase text-center font-semibold",
         {
           "text-orange-500": upload.state === "waiting",
+          "bg-linear-to-r from-yellow-300 via-amber-400 text-orange-500": upload.state === "processing",
           "text-primary": upload.state === "ready",
           "text-green-500": upload.state === "finished"
         }

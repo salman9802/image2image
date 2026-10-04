@@ -16,8 +16,8 @@ export interface TFormatConfig {
   label: string;                                    // for UI, e.g. "JPEG"
   extensions: string[];                             // all known extensions e.g. ["jpg", "jpeg"]
   mimeTypes: string[];                              // all known MIME types, [] if browser gives none
-  encode?: TEncoder;                                // present = usable as input
-  decode?: TDecoder;                                // present = usable as output
+  encode?: TEncoder;                                // present = usable as output
+  decode?: TDecoder;                                // present = usable as input
   supportsQuality?: boolean;                        // show a quality slider for this output?
 }
 
@@ -92,7 +92,7 @@ export const FORMATS: Record<string, TFormatConfig> = {
 } as const;
 
 
-export const DROPZONE_ACCEPTED_FILES = Object.keys(FORMATS).filter(format => FORMATS[format].encode !== undefined).map(format => {
+export const DROPZONE_ACCEPTED_FILES = Object.keys(FORMATS).filter(format => FORMATS[format].decode !== undefined).map(format => {
   const formatConfig = FORMATS[format];
   let acceptedFiles: any = {};
   formatConfig.mimeTypes.map(mimeType => acceptedFiles[mimeType] = formatConfig.extensions.map(ext => `.${ext}`));
@@ -100,5 +100,8 @@ export const DROPZONE_ACCEPTED_FILES = Object.keys(FORMATS).filter(format => FOR
   return acceptedFiles;
 });
 
-export const SUPPORTED_FORMAT_CONFIGS = Object.keys(FORMATS).filter(format => FORMATS[format].decode !== undefined).map(format => FORMATS[format]);
+export const SUPPORTED_FORMAT_CONFIGS = Object.keys(FORMATS).filter(format => FORMATS[format].encode !== undefined).map(format => FORMATS[format]);
+
+
+export const ACCEPTED_FORMAT_CONFIGS = Object.keys(FORMATS).filter(format => FORMATS[format].decode !== undefined).map(format => FORMATS[format]);
 

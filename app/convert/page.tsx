@@ -4,7 +4,7 @@ import ConvertUploadItem from "@/components/convert/ConvertUploadItem";
 import { Button } from "@/components/ui/button";
 import { ConvertContextProvider, TConvertUploadItem, useConvert } from "@/contexts/convert";
 import { convert, getFormatConfigByMimeType } from "@/lib/convert";
-import { DROPZONE_ACCEPTED_FILES } from "@/lib/formats";
+import { ACCEPTED_FORMAT_CONFIGS, DROPZONE_ACCEPTED_FILES } from "@/lib/formats";
 import { cn, downloadBlob, fileIcon } from "@/lib/utils";
 import { TConvertComponentState } from "@/types/convert.type";
 import { Check, File, ImageUp, Upload, X } from "lucide-react";
@@ -121,6 +121,17 @@ export default function Page() {
       <div className="flex flex-col gap-2 items-center">
         <h1 className="font-semibold text-primary text-xl md:text-2xl lg:text-3xl">File Converter</h1>
         <p>Convert your images to any supported format.</p>
+      </div>
+
+      <div className="w-full flex flex-col gap-4">
+        <h2 className="font-semibold uppercase text-primary text-xl md:text-2xl">Accepted Files:</h2>
+        <div className="flex flex-wrap gap-x-4 gap-y-3">
+          {ACCEPTED_FORMAT_CONFIGS.map((supportedFormatConfig, i) => (
+            <p key={i} className="cursor-pointer bg-primary/5 px-4 py-2 text-primary font-mono">
+              {supportedFormatConfig.extensions[0]}
+            </p>
+          ))}
+        </div>
       </div>
 
       {/* Uploads */}
