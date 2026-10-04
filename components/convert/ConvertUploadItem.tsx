@@ -48,9 +48,6 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
         // setOutput(blob);
         context.setUploadConvertedBlob(uploadId, blob);
         context.setUploadState(uploadId, "finished");
-
-        // const filename = upload.file.name.split(".").slice(-1).join(".");
-        // downloadBlob(blob, `${filename}.${targetFormatConfig.extensions[0]}`);
       })();
     }
   }, [context.state]);
@@ -106,10 +103,16 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
       {
         upload.state === "finished"
           ? (
-            <Button>
-              <IoMdDownload />
-              <span>Download</span>
-            </Button>
+            <IoMdDownload
+              onClick={() => {
+                if (upload.convertedBlob && targetFormatConfig) {
+                  const filename = upload.file.name.split(".").slice(-1).join(".");
+                  downloadBlob(upload.convertedBlob, `${filename}.${targetFormatConfig?.extensions[0]}`);
+                } else {
+                  alert("Something went wrong. Please refresh the page and try again.");
+                }
+              }} className="size-5 cursor-pointer text-primary" />
+            // {/* <span>Download</span> */}
           )
           : (
             <X onClick={() => context.removeUpload(uploadId)} className="size-5 cursor-pointer text-neutral-600" />
