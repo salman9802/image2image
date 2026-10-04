@@ -1,5 +1,5 @@
 import { TConvertParams } from "@/types/convert.type";
-import { drawToCanvas, TFormatConfig } from "./formats";
+import { drawToCanvas, FORMATS, TFormatConfig } from "./formats";
 
 
 
@@ -21,6 +21,15 @@ export async function convert({ file, targetFormat, quality }: TConvertParams) {
     if (error instanceof Error) return error;
     return new Error("Error: in convert() ", error);
   }
+}
+
+export function getFormatConfigByMimeType(mimeType: string) {
+  const sourceFormatConfigs = Object.keys(FORMATS).filter(format => FORMATS[format].mimeTypes.includes(mimeType)).map(format => FORMATS[format]);
+
+  if (sourceFormatConfigs.length > 0)
+    return sourceFormatConfigs[0];
+  else
+    return null;
 }
 
 export async function convertToImage(file: File, source: TFormatConfig, target: TFormatConfig, quality?: number) {

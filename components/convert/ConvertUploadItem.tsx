@@ -8,42 +8,52 @@ import { FORMATS, SUPPORTED_FORMAT_CONFIGS, TFormatConfig } from "@/lib/formats"
 import React from "react";
 import { TConvertComponentState } from "@/types/convert.type";
 import { convertToImage } from "@/lib/convert";
+import { useConvert } from "@/contexts/convert";
+import { IoMdDownload } from "react-icons/io";
 
 type TConvertUploadItemProps = {
-  state: TConvertComponentState;
-  upload: File;
+  // state: TConvertComponentState;
+  uploadId: string;
+  // upload: File;
   onFormatSelect: (mimeType: string) => any;
-  removeUpload: () => any;
+  // removeUpload: () => any;
   // startConversion: () => any;
 }
-export default function ConvertUploadItem({ state, upload, onFormatSelect, removeUpload }: TConvertUploadItemProps) {
-  const mimeType = upload.type;
+export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvertUploadItemProps) {
+  const context = useConvert();
+
+  const upload = context.getUploadById(uploadId);
+
+  if (upload == null) return null;
+
+  const mimeType = upload.file.type;
 
   const [popoverOpen, setPopoverOpen] = React.useState(false);
-  const [selectedFormatConfig, setSelectedFormatConfig] = React.useState<TFormatConfig>();
-  const [output, setOutput] = React.useState<Blob>();
+  const [targetFormatConfig, setTargetFormatConfig] = React.useState<TFormatConfig>();
 
   React.useEffect(() => {
-    if (selectedFormatConfig) {
-      onFormatSelect(selectedFormatConfig.mimeTypes[0]);
+    if (targetFormatConfig) {
+      onFormatSelect(targetFormatConfig.mimeTypes[0]);
+      context.setUploadState(uploadId, "ready");
       setPopoverOpen(false);
     }
-  }, [selectedFormatConfig]);
+  }, [targetFormatConfig]);
 
   React.useEffect(() => {
-    if (state === "processing") {
+    if (context.state === "processing") {
       (async () => {
-        if (selectedFormatConfig == undefined) throw new Error("Error: no target format selected for one of the uploads.");
+        if (targetFormatConfig == undefined) throw new Error("Error: no target format selected for one of the uploads.");
 
-        const sourceFormatConfig = Object.keys(FORMATS).filter(format => FORMATS[format].mimeTypes.includes(upload.type)).map(format => FORMATS[format])[0];
+        const blob = await convertToImage(upload.file, upload.sourceFormatConfig, targetFormatConfig);
+        // setOutput(blob);
+        context.setUploadConvertedBlob(uploadId, blob);
+        context.setUploadState(uploadId, "finished");
 
-        const blob = await convertToImage(upload, sourceFormatConfig, selectedFormatConfig);
-        setOutput(blob);
-        const filename = upload.name.split(".").slice(-1).join(".");
-        downloadBlob(blob, `${filename}.${selectedFormatConfig.extensions[0]}`);
+        // const filename = upload.file.name.split(".").slice(-1).join(".");
+        // downloadBlob(blob, `${filename}.${targetFormatConfig.extensions[0]}`);
       })();
     }
-  }, [state]);
+  }, [context.state]);
 
   return (
     <div className="bg-white flex justify-between items-center px-6 py-4">
@@ -51,7 +61,7 @@ export default function ConvertUploadItem({ state, upload, onFormatSelect, remov
       <div className="flex-1 flex gap-2 items-center">
         {fileIcon(mimeType)}
         {/* <File className="size-4" /> */}
-        <span>{upload.name}</span>
+        <span className="max-w-[10ch] break-all wrap-break-word">{upload.file.name}</span>
       </div>
 
       {/* to dropdown */}
@@ -59,10 +69,10 @@ export default function ConvertUploadItem({ state, upload, onFormatSelect, remov
         <span className="text-neutral-600">to</span>
         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
           <PopoverTrigger render={<Button variant="outline" className={cn("border-primary text-primary",
-            selectedFormatConfig && "bg-primary/5 border-none")} />}>
+            targetFormatConfig && "bg-primary/5 border-none")} />}>
             {
-              selectedFormatConfig
-                ? <span>{selectedFormatConfig.extensions[0]}</span>
+              targetFormatConfig
+                ? <span>{targetFormatConfig.extensions[0]}</span>
                 : <span>format</span>
             }
             <ChevronDown />
@@ -75,7 +85,7 @@ export default function ConvertUploadItem({ state, upload, onFormatSelect, remov
 
             <div className="flex flex-wrap gap-x-4 gap-y-3">
               {SUPPORTED_FORMAT_CONFIGS.map((supportedFormatConfig, i) => (
-                <p onClick={() => setSelectedFormatConfig(supportedFormatConfig)} key={i} className="cursor-pointer bg-primary/5 px-4 py-2 text-primary font-mono">
+                <p onClick={() => setTargetFormatConfig(supportedFormatConfig)} key={i} className="cursor-pointer bg-primary/5 px-4 py-2 text-primary font-mono">
                   {supportedFormatConfig.extensions[0]}
                   {/* {supportedFormatConfig.extensions.reduce((prev, curr) => `${ prev } / ${ curr }`, "").slice(0)} */}
                 </p>
@@ -86,11 +96,25 @@ export default function ConvertUploadItem({ state, upload, onFormatSelect, remov
         </Popover>
       </div>
 
+      {/* state */}
+      <span className="flex-1 uppercase text-center">{upload.state}</span>
+
       {/* filesize */}
-      <span className="flex-1 tabular-nums">{formatFileSize(upload.size)}</span>
+      <span className="flex-1 tabular-nums">{formatFileSize(upload.file.size)}</span>
 
       {/* 'X' remove. might require cb() */}
-      <X onClick={removeUpload} className="size-5 cursor-pointer text-neutral-600" />
+      {
+        upload.state === "finished"
+          ? (
+            <Button>
+              <IoMdDownload />
+              <span>Download</span>
+            </Button>
+          )
+          : (
+            <X onClick={() => context.removeUpload(uploadId)} className="size-5 cursor-pointer text-neutral-600" />
+          )
+      }
     </div>
   );
 }

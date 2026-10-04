@@ -2,7 +2,8 @@
 
 import ConvertUploadItem from "@/components/convert/ConvertUploadItem";
 import { Button } from "@/components/ui/button";
-import { convert } from "@/lib/convert";
+import { ConvertContextProvider, TConvertUploadItem, useConvert } from "@/contexts/convert";
+import { convert, getFormatConfigByMimeType } from "@/lib/convert";
 import { DROPZONE_ACCEPTED_FILES } from "@/lib/formats";
 import { cn, downloadBlob, fileIcon } from "@/lib/utils";
 import { TConvertComponentState } from "@/types/convert.type";
@@ -11,29 +12,45 @@ import React from "react";
 import { useDropzone } from "react-dropzone";
 import { CgSpinner } from "react-icons/cg";
 import { FaFileUpload } from "react-icons/fa";
+import { FaDownload } from "react-icons/fa";
 
 export default function Page() {
 
-  const [state, setState] = React.useState<TConvertComponentState>("idle");
+  const context = useConvert();
 
-  const [uploads, setUploads] = React.useState<File[]>();
+  // const [state, setState] = React.useState<TConvertComponentState>("idle");
+
+  // const [uploads, setUploads] = React.useState<File[]>();
 
   const handleDrop = React.useCallback((acceptedFiles: File[]) => {
-    setUploads(acceptedFiles);
+    const uploadItems: TConvertUploadItem[] = [];
+
+    acceptedFiles.map((acceptedFile, i) => {
+      const sourceFormatConfig = getFormatConfigByMimeType(acceptedFile.type);
+      if (sourceFormatConfig == null) {
+        alert(`File '${acceptedFile.name}' isn't supported`);
+      } else {
+        uploadItems.push({
+          id: crypto.randomUUID(),
+          file: acceptedFile,
+          sourceFormatConfig,
+          state: "waiting",
+          convertedBlob: null
+        });
+      }
+    });
+
+    context.setUploads(prev => [...prev, ...uploadItems]);
+    context.setState("idle");
+    // context.setUploads(acceptedFiles);
   }, []);
 
   const dropzone = useDropzone({
-    // accept: {
-    //   "image/*": [".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif"]
-    // },
     accept: DROPZONE_ACCEPTED_FILES,
     onDrop: handleDrop
   });
 
   const globalDropzone = useDropzone({
-    // accept: {
-    //   "image/*": [".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif"]
-    // },
     accept: DROPZONE_ACCEPTED_FILES,
     onDrop: handleDrop
   });
@@ -85,7 +102,7 @@ export default function Page() {
   // }
 
   const handleConvert = () => {
-    setState("processing");
+    context.setState("processing");
   }
 
   return (
@@ -97,16 +114,12 @@ export default function Page() {
 
       {/* Uploads */}
       {
-        (uploads && uploads.length > 0)
+        (context.uploads && context.uploads.length > 0)
           ? (
             <div className="bg-black/5 w-full p-6 flex flex-col gap-6">
-              {uploads.map((upload, i) => <ConvertUploadItem
-                key={i}
-                state={state}
-                upload={upload}
-                removeUpload={() => {
-                  setUploads(prevUploads => prevUploads ? prevUploads.filter((u, idx) => idx !== i) : [])
-                }}
+              {context.uploads.map(upload => <ConvertUploadItem
+                key={upload.id}
+                uploadId={upload.id}
                 onFormatSelect={() => {
                   // TODO: 
                 }}
@@ -151,15 +164,25 @@ export default function Page() {
         </aside>
       )}
 
+      {/* Convert Button */}
       <div className="w-full flex items-center justify-center">
-        <Button disabled={state !== "idle"} onClick={handleConvert} className="flex-1">
+        <Button disabled={["idle", "processing"].includes(context.state)} onClick={handleConvert} className="flex-1">
           {
-            state === "idle"
+            ["idle", "pending"].includes(context.state)
               ? <span>Convert</span>
-              : <>
-                <CgSpinner className="animate-spin" />
-                <span>Processing...</span>
-              </>
+              : context.state === "processing"
+                ? (
+                  <>
+                    <CgSpinner className="animate-spin" />
+                    <span>Processing...</span>
+                  </>
+                )
+                : (
+                  <>
+                    <FaDownload />
+                    <span>Download all</span>
+                  </>
+                )
           }
         </Button>
       </div>
@@ -207,6 +230,6 @@ export default function Page() {
       {/* </div> */}
 
       {/* <Button onClick={handleConvertToPng}>Convert to PNG</Button> */}
-    </div >
+    </div>
   )
 }
