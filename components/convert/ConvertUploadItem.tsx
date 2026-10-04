@@ -33,14 +33,16 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
 
   React.useEffect(() => {
     if (targetFormatConfig) {
+      context.setUploadTargetFormatConfig(uploadId, targetFormatConfig);
+
       onFormatSelect(targetFormatConfig.mimeTypes[0]);
-      context.setUploadState(uploadId, "ready");
+      // context.setUploadState(uploadId, "ready");
       setPopoverOpen(false);
     }
   }, [targetFormatConfig]);
 
   React.useEffect(() => {
-    if (context.state === "processing") {
+    if (context.state === "processing" && upload.state === "ready") {
       (async () => {
         if (targetFormatConfig == undefined) throw new Error("Error: no target format selected for one of the uploads.");
 
@@ -107,7 +109,7 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
               onClick={() => {
                 if (upload.convertedBlob && targetFormatConfig) {
                   const filename = upload.file.name.split(".").slice(-1).join(".");
-                  downloadBlob(upload.convertedBlob, `${filename}.${targetFormatConfig?.extensions[0]}`);
+                  downloadBlob(upload.convertedBlob, `${filename}.${targetFormatConfig.extensions[0]}`);
                 } else {
                   alert("Something went wrong. Please refresh the page and try again.");
                 }

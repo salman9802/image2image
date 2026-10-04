@@ -102,7 +102,18 @@ export default function Page() {
   // }
 
   const handleConvert = () => {
-    context.setState("processing");
+    if (context.state === "finished") {
+      const finishedUploads = context.uploads.filter(u => u.state === "finished" && u.convertedBlob);
+      finishedUploads.map(upload => {
+        const filename = upload.file.name.split(".").slice(-1).join(".");
+        downloadBlob(upload.convertedBlob!, `${filename}.${upload.targetFormatConfig?.extensions[0]}`);
+      });
+
+      context.setState("idle");
+      return;
+    } else {
+      context.setState("processing");
+    }
   }
 
   return (
