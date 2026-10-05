@@ -30,6 +30,10 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
 
   const [popoverOpen, setPopoverOpen] = React.useState(false);
   const [targetFormatConfig, setTargetFormatConfig] = React.useState<TFormatConfig>();
+  React.useEffect(() => {
+    if (upload.targetFormatConfig)
+      setTargetFormatConfig(upload.targetFormatConfig);
+  }, [upload.targetFormatConfig]);
 
   React.useEffect(() => {
     if (targetFormatConfig) {

@@ -2,15 +2,16 @@
 
 import ConvertUploadItem from "@/components/convert/ConvertUploadItem";
 import { Button } from "@/components/ui/button";
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import { ConvertContextProvider, TConvertUploadItem, useConvert } from "@/contexts/convert";
 import { convert, getFormatConfigByMimeType } from "@/lib/convert";
-import { ACCEPTED_FORMAT_CONFIGS, DROPZONE_ACCEPTED_FILES } from "@/lib/formats";
+import { ACCEPTED_FORMAT_CONFIGS, DROPZONE_ACCEPTED_FILES, SUPPORTED_FORMAT_CONFIGS, TFormatConfig } from "@/lib/formats";
 import { cn, downloadBlob, fileIcon } from "@/lib/utils";
 import { TConvertComponentState } from "@/types/convert.type";
-import { Check, File, ImageUp, Upload, X } from "lucide-react";
+import { Check, ChevronDownIcon, File, ImageUp, Upload, X } from "lucide-react";
 import React from "react";
 import { useDropzone } from "react-dropzone";
-import { CgSpinner } from "react-icons/cg";
+import { CgArrowsExchange, CgSpinner } from "react-icons/cg";
 import { FaFileUpload } from "react-icons/fa";
 import { FaDownload } from "react-icons/fa";
 
@@ -116,9 +117,24 @@ export default function Page() {
     }
   }
 
+  // ========================= All Upload Target Selection =========================
+  const [allUploadsTargetCollapsibleOpen, setAllUploadsTargetCollapsibleOpen] = React.useState(false);
+  const handleAllUploadTargetSelection = (targetFormatConfig: TFormatConfig) => {
+    const uploads = [...context.uploads];
+    for (let i = 0; i < uploads.length; i++) {
+      uploads[i].targetFormatConfig = targetFormatConfig;
+      uploads[i].state = "ready";
+    }
+    context.setUploads(uploads);
+    setAllUploadsTargetCollapsibleOpen(false);
+  }
+
   return (
     <div className="py-24 w-11/12 max-w-xl  min-h-screen mx-auto flex flex-col justify-center items-center gap-y-12 md:max-w-2xl lg:max-w-3xl">
       <div className="flex flex-col gap-2 items-center">
+        <div className="p-1 bg-primary/5">
+          <CgArrowsExchange className="size-8 text-primary" />
+        </div>
         <h1 className="font-semibold text-primary text-xl md:text-2xl lg:text-3xl">File Converter</h1>
         <p>Convert your images to any supported format.</p>
       </div>
@@ -152,27 +168,49 @@ export default function Page() {
           : null
       }
 
-      <div {...dropzone.getRootProps({
-        className: cn("w-full border border-dotted border-neutral-400 p-24 text-neutral-400 cursor-pointer flex flex-col items-center justify-center gap-6",
-          // Keyboard focus
-          dropzone.isFocused && "border-primary bg-primary/5",
-          // Valid file being dragged over
-          dropzone.isDragAccept && "border-primary bg-primary/5",
-          // Invalid file being dragged over
-          dropzone.isDragReject && "border-destructive bg-destructive/10",
-        )
-      })}>
-        <input
-          {...dropzone.getInputProps()}
-        // className="border border-neutral-300 px-4 py-2"
-        // type="file"
-        // accept="image/jpeg"
-        // onChange={e => setUpload(e.target.files ? e.target.files[0] : undefined)}
-        />
+      <div className="w-full flex flex-col gap-2">
+        <div {...dropzone.getRootProps({
+          className: cn("w-full border border-dotted border-neutral-400 p-24 text-neutral-400 cursor-pointer flex flex-col items-center justify-center gap-6",
+            // Keyboard focus
+            dropzone.isFocused && "border-primary bg-primary/5",
+            // Valid file being dragged over
+            dropzone.isDragAccept && "border-primary bg-primary/5",
+            // Invalid file being dragged over
+            dropzone.isDragReject && "border-destructive bg-destructive/10",
+          )
+        })}>
+          <input
+            {...dropzone.getInputProps()}
+          // className="border border-neutral-300 px-4 py-2"
+          // type="file"
+          // accept="image/jpeg"
+          // onChange={e => setUpload(e.target.files ? e.target.files[0] : undefined)}
+          />
 
-        <ImageUp className="size-24 text-neutral-300" />
+          <div className="p-1 bg-primary/5">
+            <ImageUp className="size-12 text-primary" />
+          </div>
 
-        <p>Drag 'n' drop some files here, or click to select files</p>
+          <p>Drag 'n' drop some files here</p>
+          <p>or <span className="text-primary">click to select files from you device</span></p>
+        </div>
+
+        <Collapsible open={allUploadsTargetCollapsibleOpen} onOpenChange={setAllUploadsTargetCollapsibleOpen}>
+          <CollapsibleTrigger render={
+            <Button variant="ghost" className="w-full">
+              Convert all to
+              <ChevronDownIcon className="ml-auto group-data-panel-open/button:rotate-180" />
+            </Button>
+          } />
+          <CollapsibleContent className="mb-2 flex flex-wrap gap-x-4 gap-y-3">
+            {SUPPORTED_FORMAT_CONFIGS.map((supportedFormatConfig, i) => (
+              <p onClick={() => handleAllUploadTargetSelection(supportedFormatConfig)} key={i} className="cursor-pointer bg-primary/5 px-4 py-2 text-primary font-mono">
+                {supportedFormatConfig.extensions[0]}
+                {/* {supportedFormatConfig.extensions.reduce((prev, curr) => `${ prev } / ${ curr }`, "").slice(0)} */}
+              </p>
+            ))}
+          </CollapsibleContent>
+        </Collapsible>
       </div>
 
       {/* <h4>Accepted files</h4> */}
@@ -186,27 +224,34 @@ export default function Page() {
         </aside>
       )}
 
+
       {/* Convert Button */}
-      <div className="w-full flex items-center justify-center">
-        <Button disabled={["idle", "processing"].includes(context.state)} onClick={handleConvert} className="flex-1">
-          {
-            ["idle", "pending"].includes(context.state)
-              ? <span>Convert</span>
-              : context.state === "processing"
-                ? (
-                  <>
-                    <CgSpinner className="animate-spin" />
-                    <span>Processing...</span>
-                  </>
-                )
-                : (
-                  <>
-                    <FaDownload />
-                    <span>Download all</span>
-                  </>
-                )
-          }
-        </Button>
+      <div className="w-full flex flex-col gap-2">
+        <div className="w-full flex items-center justify-center">
+          <Button disabled={["idle", "processing"].includes(context.state)} onClick={handleConvert} className="flex-1">
+            {
+              ["idle", "pending"].includes(context.state)
+                ? <span>Convert</span>
+                : context.state === "processing"
+                  ? (
+                    <>
+                      <CgSpinner className="animate-spin" />
+                      <span>Processing...</span>
+                    </>
+                  )
+                  : (
+                    <>
+                      <FaDownload />
+                      <span>Download all</span>
+                    </>
+                  )
+            }
+          </Button>
+        </div>
+        <div className="flex flex-col items-center">
+          <p className="text-sm">All conversions happen locally in your browser.</p>
+          <p className="text-sm">Uploads never leave you system.</p>
+        </div>
       </div>
 
       {/* Global Drag aware overlay */}
