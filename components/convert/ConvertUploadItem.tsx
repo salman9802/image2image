@@ -1,7 +1,7 @@
 "use client";
 
 import { cn, downloadBlob, fileIcon, formatFileSize } from "@/lib/utils";
-import { ChevronDown, X } from "lucide-react";
+import { ArrowRight, ChevronDown, X } from "lucide-react";
 import { Popover, PopoverTrigger, PopoverContent, PopoverHeader, PopoverTitle, PopoverDescription, } from "../ui/popover";
 import { Button } from "../ui/button";
 import { FORMATS, SUPPORTED_FORMAT_CONFIGS, TFormatConfig } from "@/lib/formats";
@@ -62,15 +62,24 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
   return (
     <div className="bg-white flex justify-between items-center px-6 py-4">
       {/* Icon + Name */}
-      <div className="flex-1 flex gap-2 items-center">
-        {fileIcon(mimeType)}
+      <div className="flex-1 flex flex-col gap-2">
         {/* <File className="size-4" /> */}
-        <span className="max-w-[10ch] break-all wrap-break-word">{upload.file.name}</span>
+        <div className="flex items-center gap-2">
+          {fileIcon(mimeType)}
+          <span className="max-w-[10ch] break-all wrap-break-word">{upload.file.name}</span>
+        </div>
+        <div className="text-xs flex items-end gap-x-2">
+          <span className="font-mono">{upload.file.type}</span>
+          <div className="self-center size-1 bg-neutral-600" />
+          <span className="tabular-nums">{formatFileSize(upload.file.size)}</span>
+        </div>
+
       </div>
 
       {/* to dropdown */}
       <div className="flex-1 flex items-center gap-4">
-        <span className="text-neutral-600">to</span>
+        {/* <span className="text-neutral-600">to</span> */}
+        <ArrowRight className="text-neutral-400" />
         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
           <PopoverTrigger render={<Button variant="outline" className={cn("border-primary text-primary",
             targetFormatConfig && "bg-primary/5 border-none")} />}>
@@ -111,7 +120,7 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
       )}>{upload.state}</span>
 
       {/* filesize */}
-      <span className="flex-1 tabular-nums">{formatFileSize(upload.file.size)}</span>
+      {/* <span className="flex-1 tabular-nums">{formatFileSize(upload.file.size)}</span> */}
 
       {/* 'X' remove. might require cb() */}
       {
