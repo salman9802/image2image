@@ -154,15 +154,49 @@ export default function Page() {
       {
         (context.uploads && context.uploads.length > 0)
           ? (
-            <div className="bg-black/5 w-full p-6 flex flex-col gap-6">
-              {context.uploads.map(upload => <ConvertUploadItem
-                key={upload.id}
-                uploadId={upload.id}
-                onFormatSelect={() => {
-                  // TODO: 
-                }}
-              />
-              )}
+            <div className="w-full flex flex-col gap-2">
+              <div className="flex justify-between items-start">
+                <div className="flex flex-col">
+                  <p className="tabular-nums font-semibold text-lg text-primary md:text-xl">{context.uploads.length} Files {context.state === "finished" ? "converted" : ""}</p>
+                  <p className="text-sm">{
+                    context.state === "idle"
+                      ? `${context.uploads.filter(u => u.state === "ready").length} of ${context.uploads.length} ready.`
+                      : context.state === "finished"
+                        ? "Finished conversions. Files ready to download."
+                        : "All set ready to convert."
+                  }</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  {/* <span>Set all to</span> */}
+                  <Collapsible open={allUploadsTargetCollapsibleOpen} onOpenChange={setAllUploadsTargetCollapsibleOpen}>
+                    <CollapsibleTrigger render={
+                      <Button variant="ghost" className="w-full">
+                        Convert all to
+                        <ChevronDownIcon className="ml-auto group-data-panel-open/button:rotate-180" />
+                      </Button>
+                    } />
+                    <CollapsibleContent className="p-2 mb-2 flex flex-wrap gap-x-4 gap-y-3">
+                      {SUPPORTED_FORMAT_CONFIGS.map((supportedFormatConfig, i) => (
+                        <p onClick={() => handleAllUploadTargetSelection(supportedFormatConfig)} key={i} className="cursor-pointer bg-primary/5 px-4 py-2 text-primary font-mono">
+                          {supportedFormatConfig.extensions[0]}
+                          {/* {supportedFormatConfig.extensions.reduce((prev, curr) => `${ prev } / ${ curr }`, "").slice(0)} */}
+                        </p>
+                      ))}
+                    </CollapsibleContent>
+                  </Collapsible>
+                </div>
+              </div>
+
+              <div className="bg-black/5 w-full p-6 flex flex-col gap-6">
+                {context.uploads.map(upload => <ConvertUploadItem
+                  key={upload.id}
+                  uploadId={upload.id}
+                  onFormatSelect={() => {
+                    // TODO: 
+                  }}
+                />
+                )}
+              </div>
             </div>
           )
           : null
@@ -177,6 +211,8 @@ export default function Page() {
             dropzone.isDragAccept && "border-primary bg-primary/5",
             // Invalid file being dragged over
             dropzone.isDragReject && "border-destructive bg-destructive/10",
+
+            context.uploads.length !== 0 && "h-25"
           )
         })}>
           <input
@@ -195,22 +231,24 @@ export default function Page() {
           <p>or <span className="text-primary">click to select files from you device</span></p>
         </div>
 
-        <Collapsible open={allUploadsTargetCollapsibleOpen} onOpenChange={setAllUploadsTargetCollapsibleOpen}>
-          <CollapsibleTrigger render={
-            <Button variant="ghost" className="w-full">
-              Convert all to
-              <ChevronDownIcon className="ml-auto group-data-panel-open/button:rotate-180" />
-            </Button>
-          } />
-          <CollapsibleContent className="mb-2 flex flex-wrap gap-x-4 gap-y-3">
-            {SUPPORTED_FORMAT_CONFIGS.map((supportedFormatConfig, i) => (
-              <p onClick={() => handleAllUploadTargetSelection(supportedFormatConfig)} key={i} className="cursor-pointer bg-primary/5 px-4 py-2 text-primary font-mono">
-                {supportedFormatConfig.extensions[0]}
-                {/* {supportedFormatConfig.extensions.reduce((prev, curr) => `${ prev } / ${ curr }`, "").slice(0)} */}
-              </p>
-            ))}
-          </CollapsibleContent>
-        </Collapsible>
+        {
+          //         <Collapsible open={allUploadsTargetCollapsibleOpen} onOpenChange={setAllUploadsTargetCollapsibleOpen}>
+          //           <CollapsibleTrigger render={
+          //             <Button variant="ghost" className="w-full">
+          //               Convert all to
+          //               <ChevronDownIcon className="ml-auto group-data-panel-open/button:rotate-180" />
+          //             </Button>
+          //           } />
+          //           <CollapsibleContent className="mb-2 flex flex-wrap gap-x-4 gap-y-3">
+          //             {SUPPORTED_FORMAT_CONFIGS.map((supportedFormatConfig, i) => (
+          //               <p onClick={() => handleAllUploadTargetSelection(supportedFormatConfig)} key={i} className="cursor-pointer bg-primary/5 px-4 py-2 text-primary font-mono">
+          //                 {supportedFormatConfig.extensions[0]}
+          //                 {/* {supportedFormatConfig.extensions.reduce((prev, curr) => `${ prev } / ${ curr }`, "").slice(0)} */}
+          //               </p>
+          //             ))}
+          //           </CollapsibleContent>
+          //         </Collapsible>
+        }
       </div>
 
       {/* <h4>Accepted files</h4> */}
@@ -258,7 +296,7 @@ export default function Page() {
       {
         dropzone.isDragGlobal && !dropzone.isDragActive && (
           <div {...globalDropzone.getRootProps({
-            className: "absolute inset-0 backdrop-blur-md flex flex-col items-center justify-center bg-primary/10"
+            className: "fixed inset-0 backdrop-blur-md flex flex-col items-center justify-center bg-primary/10"
           })}>
             <input {...globalDropzone.getInputProps()} />
             <div className="flex flex-col items-center gap-6 bg-white/50 p-32 w-11/12 md:w-2/3 lg:w-1/2">
