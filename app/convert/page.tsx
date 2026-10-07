@@ -4,6 +4,7 @@ import ConvertUploadItem from "@/components/convert/ConvertUploadItem";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import { ConvertContextProvider, TConvertUploadItem, useConvert } from "@/contexts/convert";
+import { useTheme } from "@/contexts/theme";
 import { convert, getFormatConfigByMimeType } from "@/lib/convert";
 import { ACCEPTED_FORMAT_CONFIGS, DROPZONE_ACCEPTED_FILES, SUPPORTED_FORMAT_CONFIGS, TFormatConfig } from "@/lib/formats";
 import { cn, downloadBlob, fileIcon } from "@/lib/utils";
@@ -16,6 +17,7 @@ import { FaFileUpload } from "react-icons/fa";
 import { FaDownload } from "react-icons/fa";
 
 export default function Page() {
+  const { theme, setTheme } = useTheme();
 
   const context = useConvert();
 
@@ -138,6 +140,8 @@ export default function Page() {
         <h1 className="font-semibold text-primary text-xl md:text-2xl lg:text-3xl">File Converter</h1>
         <p>Convert your images to any supported format.</p>
       </div>
+
+      <Button onClick={() => setTheme(prev => prev === "light" ? "dark" : "light")}>Toggle Dark/Light (current: {theme})</Button>
 
       {/* <div className="w-full flex flex-col gap-4"> */}
       {/*   <h2 className="font-semibold uppercase text-primary text-xl md:text-2xl">Accepted Files:</h2> */}

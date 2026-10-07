@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Figtree, Lora } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { ThemeContextProvider } from "@/contexts/theme";
 
 const loraHeading = Lora({ subsets: ['latin'], variable: '--font-heading' });
 
@@ -28,7 +29,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", figtree.variable, loraHeading.variable)}
     >
-      <body className="dark min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ThemeContextProvider>
+          {children}
+        </ThemeContextProvider>
+      </body>
     </html>
   );
 }
