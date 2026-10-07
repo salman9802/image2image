@@ -132,18 +132,29 @@ export default function Page() {
   return (
     <div className="py-24 w-11/12 max-w-xl  min-h-screen mx-auto flex flex-col justify-center items-center gap-y-12 md:max-w-2xl lg:max-w-3xl">
       <div className="flex flex-col gap-2 items-center">
-        <div className="p-1 bg-primary/5">
+        <div className="p-1 bg-primary/15">
           <CgArrowsExchange className="size-8 text-primary" />
         </div>
         <h1 className="font-semibold text-primary text-xl md:text-2xl lg:text-3xl">File Converter</h1>
         <p>Convert your images to any supported format.</p>
       </div>
 
-      <div className="w-full flex flex-col gap-4">
-        <h2 className="font-semibold uppercase text-primary text-xl md:text-2xl">Accepted Files:</h2>
+      {/* <div className="w-full flex flex-col gap-4"> */}
+      {/*   <h2 className="font-semibold uppercase text-primary text-xl md:text-2xl">Accepted Files:</h2> */}
+      {/*   <div className="flex flex-wrap gap-x-4 gap-y-3"> */}
+      {/*     {ACCEPTED_FORMAT_CONFIGS.map((supportedFormatConfig, i) => ( */}
+      {/*       <p key={i} className="cursor-pointer bg-primary/15 px-4 py-2 text-primary font-mono"> */}
+      {/*         {supportedFormatConfig.extensions[0]} */}
+      {/*       </p> */}
+      {/*     ))} */}
+      {/*   </div> */}
+      {/* </div> */}
+
+      <div className="flex gap-4 items-center">
+        <h2 className="font-semibold uppercase text-muted-foreground text-sm">Accepts</h2>
         <div className="flex flex-wrap gap-x-4 gap-y-3">
           {ACCEPTED_FORMAT_CONFIGS.map((supportedFormatConfig, i) => (
-            <p key={i} className="cursor-pointer bg-primary/5 px-4 py-2 text-primary font-mono">
+            <p key={i} className="cursor-pointer bg-primary/15 px-2 py-1 text-primary font-mono">
               {supportedFormatConfig.extensions[0]}
             </p>
           ))}
@@ -177,7 +188,7 @@ export default function Page() {
                     } />
                     <CollapsibleContent className="p-2 mb-2 flex flex-wrap gap-x-4 gap-y-3">
                       {SUPPORTED_FORMAT_CONFIGS.map((supportedFormatConfig, i) => (
-                        <p onClick={() => handleAllUploadTargetSelection(supportedFormatConfig)} key={i} className="cursor-pointer bg-primary/5 px-4 py-2 text-primary font-mono">
+                        <p onClick={() => handleAllUploadTargetSelection(supportedFormatConfig)} key={i} className="cursor-pointer bg-primary/15 px-4 py-2 text-primary font-mono">
                           {supportedFormatConfig.extensions[0]}
                           {/* {supportedFormatConfig.extensions.reduce((prev, curr) => `${ prev } / ${ curr }`, "").slice(0)} */}
                         </p>
@@ -204,11 +215,14 @@ export default function Page() {
 
       <div className="w-full flex flex-col gap-2">
         <div {...dropzone.getRootProps({
-          className: cn("w-full border border-dotted border-neutral-400 text-neutral-400 cursor-pointer flex flex-col items-center justify-center gap-6 p-6 md:p-12 lg:p-24 ",
+          className: cn("w-full border border-dotted border-neutral-400 text-neutral-600 dark:text-neutral-200 cursor-pointer flex flex-col items-center justify-center gap-6 p-6 md:p-12 lg:p-24 ",
+
+            "hover:bg-accent",
+
             // Keyboard focus
-            dropzone.isFocused && "border-primary bg-primary/5",
+            dropzone.isFocused && "border-primary bg-primary/15",
             // Valid file being dragged over
-            dropzone.isDragAccept && "border-primary bg-primary/5",
+            dropzone.isDragAccept && "border-primary bg-primary/15",
             // Invalid file being dragged over
             dropzone.isDragReject && "border-destructive bg-destructive/10",
 
@@ -223,7 +237,7 @@ export default function Page() {
           // onChange={e => setUpload(e.target.files ? e.target.files[0] : undefined)}
           />
 
-          <div className="p-1 bg-primary/5">
+          <div className="p-1 bg-primary/15">
             <ImageUp className="size-12 text-primary" />
           </div>
 
@@ -242,7 +256,7 @@ export default function Page() {
           //           } />
           //           <CollapsibleContent className="mb-2 flex flex-wrap gap-x-4 gap-y-3">
           //             {SUPPORTED_FORMAT_CONFIGS.map((supportedFormatConfig, i) => (
-          //               <p onClick={() => handleAllUploadTargetSelection(supportedFormatConfig)} key={i} className="cursor-pointer bg-primary/5 px-4 py-2 text-primary font-mono">
+          //               <p onClick={() => handleAllUploadTargetSelection(supportedFormatConfig)} key={i} className="cursor-pointer bg-primary/15 px-4 py-2 text-primary font-mono">
           //                 {supportedFormatConfig.extensions[0]}
           //                 {/* {supportedFormatConfig.extensions.reduce((prev, curr) => `${ prev } / ${ curr }`, "").slice(0)} */}
           //               </p>
@@ -297,12 +311,12 @@ export default function Page() {
       {
         dropzone.isDragGlobal && !dropzone.isDragActive && (
           <div {...globalDropzone.getRootProps({
-            className: "fixed inset-0 backdrop-blur-md flex flex-col items-center justify-center bg-primary/10"
+            className: "fixed inset-0 backdrop-blur-md flex flex-col items-center justify-center bg-primary/15"
           })}>
             <input {...globalDropzone.getInputProps()} />
-            <div className="flex flex-col items-center gap-6 bg-white/50 p-32 w-11/12 md:w-2/3 lg:w-1/2">
+            <div className="flex flex-col items-center gap-6 bg-white/30 p-32 w-11/12 md:w-2/3 lg:w-1/2">
               <FaFileUpload className="size-12 text-primary/70" />
-              <div className="text-center text-neutral-600">
+              <div className="text-center text-neutral-600 dark:text-neutral-200">
                 Drop files anywhere on this page...
               </div>
 
