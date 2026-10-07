@@ -60,7 +60,7 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
   }, [context.state]);
 
   return (
-    <div className="bg-white flex flex-wrap justify-between items-center px-6 py-4 gap-4 sm:gap-0">
+    <div className="bg-white dark:bg-neutral-900 flex flex-wrap justify-between items-center px-6 py-4 gap-4 sm:gap-0">
       {/* Icon + Name */}
       <div className="flex-1 flex flex-col gap-2">
         {/* <File className="size-4" /> */}
@@ -82,7 +82,7 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
         <ArrowRight className="text-neutral-400" />
         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
           <PopoverTrigger render={<Button variant="outline" className={cn("border-primary text-primary",
-            targetFormatConfig && "bg-primary/5 border-none")} />}>
+            targetFormatConfig && "bg-primary/15 border-none")} />}>
             {
               targetFormatConfig
                 ? <span>{targetFormatConfig.extensions[0]}</span>
@@ -98,7 +98,7 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
 
             <div className="flex flex-wrap gap-x-4 gap-y-3">
               {SUPPORTED_FORMAT_CONFIGS.filter(config => !config.mimeTypes.includes(upload.file.type)).map((supportedFormatConfig, i) => (
-                <p onClick={() => setTargetFormatConfig(supportedFormatConfig)} key={i} className="cursor-pointer bg-primary/5 px-4 py-2 text-primary font-mono">
+                <p onClick={() => setTargetFormatConfig(supportedFormatConfig)} key={i} className="cursor-pointer bg-primary/15 px-4 py-2 text-primary font-mono">
                   {supportedFormatConfig.extensions[0]}
                   {/* {supportedFormatConfig.extensions.reduce((prev, curr) => `${ prev } / ${ curr }`, "").slice(0)} */}
                 </p>
@@ -113,7 +113,7 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
       <span className={cn("flex-1 uppercase text-center font-semibold",
         {
           "text-orange-500": upload.state === "waiting",
-          "bg-linear-to-r from-yellow-300 via-amber-400 text-orange-500": upload.state === "processing",
+          "text-amber-400": upload.state === "processing",
           "text-primary": upload.state === "ready",
           "text-green-500": upload.state === "finished"
         }
@@ -134,7 +134,7 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
                 } else {
                   alert("Something went wrong. Please refresh the page and try again.");
                 }
-              }} className="size-5 cursor-pointer text-primary" />
+              }} className="size-5 cursor-pointer text-primary lg:size-8" />
             // {/* <span>Download</span> */}
           )
           : (

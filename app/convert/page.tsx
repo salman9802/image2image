@@ -202,7 +202,7 @@ export default function Page() {
                 </div>
               </div>
 
-              <div className="bg-black/5 w-full p-6 flex flex-col gap-6">
+              <div className="bg-accent w-full p-6 flex flex-col gap-6">
                 {context.uploads.map(upload => <ConvertUploadItem
                   key={upload.id}
                   uploadId={upload.id}
@@ -230,7 +230,7 @@ export default function Page() {
             // Invalid file being dragged over
             dropzone.isDragReject && "border-destructive bg-destructive/10",
 
-            context.uploads.length !== 0 && "h-25"
+            context.uploads.length !== 0 && "h-25 gap-3"
           )
         })}>
           <input
