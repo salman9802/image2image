@@ -155,7 +155,7 @@ export default function Page() {
         (context.uploads && context.uploads.length > 0)
           ? (
             <div className="w-full flex flex-col gap-2">
-              <div className="flex justify-between items-start">
+              <div className="flex flex-col justify-between items-start sm:flex-row">
                 <div className="flex flex-col">
                   <p className="tabular-nums font-semibold text-lg text-primary md:text-xl">{context.uploads.length} Files {context.state === "finished" ? "converted" : ""}</p>
                   <p className="text-sm">{
@@ -204,7 +204,7 @@ export default function Page() {
 
       <div className="w-full flex flex-col gap-2">
         <div {...dropzone.getRootProps({
-          className: cn("w-full border border-dotted border-neutral-400 p-24 text-neutral-400 cursor-pointer flex flex-col items-center justify-center gap-6",
+          className: cn("w-full border border-dotted border-neutral-400 text-neutral-400 cursor-pointer flex flex-col items-center justify-center gap-6 p-6 md:p-12 lg:p-24 ",
             // Keyboard focus
             dropzone.isFocused && "border-primary bg-primary/5",
             // Valid file being dragged over
@@ -228,7 +228,8 @@ export default function Page() {
           </div>
 
           <p>Drag 'n' drop some files here</p>
-          <p>or <span className="text-primary">click to select files from you device</span></p>
+          <p>or</p>
+          <span className="text-primary">Click to select files from you device</span>
         </div>
 
         {

@@ -60,7 +60,7 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
   }, [context.state]);
 
   return (
-    <div className="bg-white flex justify-between items-center px-6 py-4">
+    <div className="bg-white flex flex-wrap justify-between items-center px-6 py-4 gap-4 sm:gap-0">
       {/* Icon + Name */}
       <div className="flex-1 flex flex-col gap-2">
         {/* <File className="size-4" /> */}
