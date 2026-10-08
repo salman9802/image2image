@@ -4,7 +4,7 @@
  */
 
 
-import { encode as avifEncode, decode as avifDecode } from "@jsquash/avif";
+// import { encode as avifEncode, decode as avifDecode } from "@jsquash/avif";
 
 
 // A decoded image is either what the browser natively decoded (ImageBitmap)
@@ -99,12 +99,17 @@ export const FORMATS: Record<string, TFormatConfig> = {
     extensions: ["avif"],
     mimeTypes: ["image/avif"],
     // NOTE: avif decode works with `ArrayBuffer` not `Blob`
-    decode: (file) => file.arrayBuffer().then(avifDecode),
+    decode: async (file) => {
+      const { decode } = await import("@jsquash/avif");
+      return file.arrayBuffer().then(decode);
+    },
     encode: async (canvas, quality) => {
+      const { encode } = await import("@jsquash/avif");
+
       const ctx = canvas.getContext("2d");
       if (!ctx) throw new Error("Error: Failed to retrieve canvas context in avif encode()");
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const avifArrayBuffer = await avifEncode(imageData, { quality, lossless: true });
+      const avifArrayBuffer = await encode(imageData, { quality, lossless: true });
 
       return new Blob([avifArrayBuffer], { type: "image/avif" });
     },
