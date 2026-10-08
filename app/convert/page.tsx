@@ -110,7 +110,7 @@ export default function Page() {
       finishedUploads.map(upload => {
         const filename = upload.file.name.split(".").slice(0, -1).join(".");
         downloadBlob(upload.convertedBlob!, `${filename}.${upload.targetFormatConfig?.extensions[0]}`);
-        // TODO: remove all uploads after downloading all of them
+        context.setUploads([]);
       });
 
       // context.setState("idle");
@@ -182,24 +182,27 @@ export default function Page() {
                         : "All set ready to convert."
                   }</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  {/* <span>Set all to</span> */}
-                  <Collapsible open={allUploadsTargetCollapsibleOpen} onOpenChange={setAllUploadsTargetCollapsibleOpen}>
-                    <CollapsibleTrigger render={
-                      <Button variant="ghost" className="w-full">
-                        Convert all to
-                        <ChevronDownIcon className="ml-auto group-data-panel-open/button:rotate-180" />
-                      </Button>
-                    } />
-                    <CollapsibleContent className="p-2 mb-2 flex flex-wrap gap-x-4 gap-y-3">
-                      {SUPPORTED_FORMAT_CONFIGS.map((supportedFormatConfig, i) => (
-                        <p onClick={() => handleAllUploadTargetSelection(supportedFormatConfig)} key={i} className="cursor-pointer bg-primary/15 px-4 py-2 text-primary font-mono">
-                          {supportedFormatConfig.extensions[0]}
-                          {/* {supportedFormatConfig.extensions.reduce((prev, curr) => `${ prev } / ${ curr }`, "").slice(0)} */}
-                        </p>
-                      ))}
-                    </CollapsibleContent>
-                  </Collapsible>
+                <div className="flex items-center">
+                  <Button variant="ghost" onClick={() => context.setUploads([])}>Clear all</Button>
+                  <div className="flex items-center gap-2">
+                    {/* <span>Set all to</span> */}
+                    <Collapsible open={allUploadsTargetCollapsibleOpen} onOpenChange={setAllUploadsTargetCollapsibleOpen}>
+                      <CollapsibleTrigger render={
+                        <Button variant="ghost" className="w-full">
+                          Convert all to
+                          <ChevronDownIcon className="ml-auto group-data-panel-open/button:rotate-180" />
+                        </Button>
+                      } />
+                      <CollapsibleContent className="p-2 mb-2 flex flex-wrap gap-x-4 gap-y-3">
+                        {SUPPORTED_FORMAT_CONFIGS.map((supportedFormatConfig, i) => (
+                          <p onClick={() => handleAllUploadTargetSelection(supportedFormatConfig)} key={i} className="cursor-pointer bg-primary/15 px-4 py-2 text-primary font-mono">
+                            {supportedFormatConfig.extensions[0]}
+                            {/* {supportedFormatConfig.extensions.reduce((prev, curr) => `${ prev } / ${ curr }`, "").slice(0)} */}
+                          </p>
+                        ))}
+                      </CollapsibleContent>
+                    </Collapsible>
+                  </div>
                 </div>
               </div>
 
