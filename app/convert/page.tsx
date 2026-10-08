@@ -3,13 +3,15 @@
 import ConvertUploadItem from "@/components/convert/ConvertUploadItem";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { ConvertContextProvider, TConvertUploadItem, useConvert } from "@/contexts/convert";
 import { useTheme } from "@/contexts/theme";
 import { convert, getFormatConfigByMimeType } from "@/lib/convert";
 import { ACCEPTED_FORMAT_CONFIGS, DROPZONE_ACCEPTED_FILES, SUPPORTED_FORMAT_CONFIGS, TFormatConfig } from "@/lib/formats";
 import { cn, downloadBlob, fileIcon } from "@/lib/utils";
 import { TConvertComponentState } from "@/types/convert.type";
-import { Check, ChevronDownIcon, File, ImageUp, Upload, X } from "lucide-react";
+import JSZip from "jszip";
+import { Check, ChevronDown, ChevronDownIcon, File, ImageUp, Upload, X } from "lucide-react";
 import React from "react";
 import { useDropzone } from "react-dropzone";
 import { CgArrowsExchange, CgSpinner } from "react-icons/cg";
@@ -110,13 +112,28 @@ export default function Page() {
       finishedUploads.map(upload => {
         const filename = upload.file.name.split(".").slice(0, -1).join(".");
         downloadBlob(upload.convertedBlob!, `${filename}.${upload.targetFormatConfig?.extensions[0]}`);
-        context.setUploads([]);
       });
+      context.setUploads([]);
 
       // context.setState("idle");
       return;
     } else {
       context.setState("processing");
+    }
+  }
+
+  const handleDownloadZip = async () => {
+    if (context.state === "finished") {
+      const finishedUploads = context.uploads.filter(u => u.state === "finished" && u.convertedBlob);
+      const zip = new JSZip();
+      finishedUploads.map(upload => {
+        const filename = upload.file.name.split(".").slice(0, -1).join(".");
+        // downloadBlob(upload.convertedBlob!, `${filename}.${upload.targetFormatConfig?.extensions[0]}`);
+        zip.file(`${filename}.${upload.targetFormatConfig?.extensions[0]}`, upload.convertedBlob!);
+      });
+      const zipBlob = await zip.generateAsync({ type: "blob" });
+      downloadBlob(zipBlob, "image2image-converted.zip");
+      context.setUploads([]);
     }
   }
 
@@ -289,6 +306,34 @@ export default function Page() {
       {/* Convert Button */}
       <div className="w-full flex flex-col gap-2">
         <div className="w-full flex items-center justify-center">
+          {
+            //           <div className="flex">
+            //             {/* Primary action */}
+            //             <Button className="rounded-r-none">
+            //               Save
+            //             </Button>
+            // 
+            //             {/* Other operations */}
+            //             <DropdownMenu>
+            //               <DropdownMenuTrigger>
+            //                 <Button
+            //                   variant="default"
+            //                   size="icon"
+            //                   className="rounded-l-none border-l border-primary-foreground/20"
+            //                 >
+            //                   <ChevronDown />
+            //                   <span className="sr-only">More save options</span>
+            //                 </Button>
+            //               </DropdownMenuTrigger>
+            // 
+            //               <DropdownMenuContent align="end">
+            //                 <DropdownMenuItem>Save & Close</DropdownMenuItem>
+            //                 <DropdownMenuItem>Save as Draft</DropdownMenuItem>
+            //                 <DropdownMenuItem>Save & New</DropdownMenuItem>
+            //               </DropdownMenuContent>
+            //             </DropdownMenu>
+            //           </div>
+          }
           <Button disabled={["idle", "processing"].includes(context.state)} onClick={handleConvert} className="flex-1">
             {
               ["idle", "pending"].includes(context.state)
@@ -301,14 +346,34 @@ export default function Page() {
                     </>
                   )
                   : (
-                    <>
-                      <FaDownload />
-                      {/* TODO: Download zip second option */}
-                      <span>Download all</span>
-                    </>
+                    <div className="w-full flex justify-between items-center">
+                      <div className="flex items-center gap-4">
+                        <FaDownload />
+                        <span>Download all</span>
+                      </div>
+                    </div>
                   )
             }
           </Button>
+
+          {context.state === "finished" && (
+            <DropdownMenu>
+              <DropdownMenuTrigger render={<Button variant="default" size="icon" className="rounded-l-none border-l border-primary-foreground/20" />}>
+                {/* <Button */}
+                {/*   variant="default" */}
+                {/*   size="icon" */}
+                {/*   className="rounded-l-none border-l border-primary-foreground/20" */}
+                {/* > */}
+                <ChevronDown />
+                <span className="sr-only">More save options</span>
+                {/* </Button> */}
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={handleDownloadZip}>Download as Zip</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
         <div className="flex flex-col items-center">
           <p className="text-sm">All conversions happen locally in your browser.</p>
