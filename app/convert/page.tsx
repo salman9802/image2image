@@ -7,7 +7,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { TConvertUploadItem, useConvert } from "@/contexts/convert";
 import { useTheme } from "@/contexts/theme";
 import { getFormatConfigByMimeType } from "@/lib/convert";
-import { ACCEPTED_FORMAT_CONFIGS, DROPZONE_ACCEPTED_FILES, SUPPORTED_FORMAT_CONFIGS, TFormatConfig } from "@/lib/formats";
+import { ACCEPTED_FORMAT_CONFIGS, detectFormat, DROPZONE_ACCEPTED_FILES, SUPPORTED_FORMAT_CONFIGS, TFormatConfig } from "@/lib/formats";
 import { cn, downloadBlob } from "@/lib/utils";
 import JSZip from "jszip";
 import { Check, ChevronDown, ChevronDownIcon, ImageUp, X } from "lucide-react";
@@ -30,7 +30,9 @@ export default function Page() {
     const uploadItems: TConvertUploadItem[] = [];
 
     acceptedFiles.map((acceptedFile, i) => {
-      const sourceFormatConfig = getFormatConfigByMimeType(acceptedFile.type);
+      // console.log({ "acceptedFile.type": acceptedFile.type })
+      // const sourceFormatConfig = getFormatConfigByMimeType(acceptedFile.type);
+      const sourceFormatConfig = detectFormat(acceptedFile);
       if (sourceFormatConfig == null) {
         alert(`File '${acceptedFile.name}' isn't supported`);
       } else {

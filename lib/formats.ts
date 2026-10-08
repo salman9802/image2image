@@ -117,25 +117,30 @@ export const FORMATS: Record<string, TFormatConfig> = {
   },
   heic: {
     id: "heic",
-    label: "HEIC/HEIF",
+    label: "HEIC",
     extensions: ["heic"],
-    mimeTypes: [],
+    mimeTypes: ["image/heic"],
     decode: async (file) => {
-      // @ts-expect-error libheif-js ships no type declarations
-      const module = await import("libheif-js/wasm");
-      const libheif = module.default ?? module;
+      // // @ts-expect-error libheif-js ships no type declarations
+      // const module = await import("libheif-js/wasm");
+      // const libheif = module.default ?? module;
+      //
+      // const decoder = new libheif.HeifDecoder();
+      // const [image] = decoder.decode(new Uint8Array(await file.arrayBuffer()));
 
-      const decoder = new libheif.HeifDecoder();
-      const [image] = decoder.decode(new Uint8Array(await file.arrayBuffer()));
+      // const imageData = new ImageData(image.get_width(), image.get_height());
+      //
+      // return new Promise<ImageData>((resolve, reject) => {
+      //   image.display(imageData, (result: any) => {
+      //     if (result) resolve(result);
+      //     else reject(new Error("Error: Failed to decode HEIC"));
+      //   })
+      // });
 
-      const imageData = new ImageData(image.get_width(), image.get_height());
+      const { heicTo } = await import("heic-to/next");
 
-      return new Promise<ImageData>((resolve, reject) => {
-        image.display(imageData, (result: any) => {
-          if (result) resolve(result);
-          else reject(new Error("Error: Failed to decode HEIC"));
-        })
-      });
+      const blob = await heicTo({ blob: file, type: "image/png" }); // lossless intermediate
+      return createImageBitmap(blob);
     }
   }
 } as const;
@@ -154,3 +159,11 @@ export const SUPPORTED_FORMAT_CONFIGS = Object.keys(FORMATS).filter(format => FO
 
 export const ACCEPTED_FORMAT_CONFIGS = Object.keys(FORMATS).filter(format => FORMATS[format].decode !== undefined).map(format => FORMATS[format]);
 
+export function detectFormat(file: File): TFormatConfig | undefined {
+  const byMime = file.type ? Object.values(FORMATS).find((f) => f.mimeTypes.includes(file.type)) : undefined;
+  if (byMime) return byMime;
+
+  // fallback by extension
+  const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
+  return Object.values(FORMATS).find((f) => f.extensions.includes(ext));
+}

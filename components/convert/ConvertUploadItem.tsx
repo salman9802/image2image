@@ -74,6 +74,7 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
           } else {
             // TODO: new error state in S.M.
             context.setUploadState(uploadId, "error");
+            console.error(ev.data.error)
           }
           worker.terminate();
         }
