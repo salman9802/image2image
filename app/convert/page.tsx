@@ -110,6 +110,7 @@ export default function Page() {
       finishedUploads.map(upload => {
         const filename = upload.file.name.split(".").slice(0, -1).join(".");
         downloadBlob(upload.convertedBlob!, `${filename}.${upload.targetFormatConfig?.extensions[0]}`);
+        // TODO: remove all uploads after downloading all of them
       });
 
       // context.setState("idle");

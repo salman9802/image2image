@@ -74,7 +74,7 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
             context.setUploadState(uploadId, "finished");
           } else {
             // TODO: new error state in S.M.
-            // context.setUploadState(uploadId, "finished");
+            context.setUploadState(uploadId, "error");
           }
           worker.terminate();
         }
@@ -141,7 +141,8 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
           "text-orange-500": upload.state === "waiting",
           "text-amber-400": upload.state === "processing",
           "text-primary": upload.state === "ready",
-          "text-green-500": upload.state === "finished"
+          "text-green-500": upload.state === "finished",
+          "text-red-500": upload.state === "error"
         }
       )}>{upload.state}</span>
 
