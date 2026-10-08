@@ -104,7 +104,7 @@ export const FORMATS: Record<string, TFormatConfig> = {
       const ctx = canvas.getContext("2d");
       if (!ctx) throw new Error("Error: Failed to retrieve canvas context in avif encode()");
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const avifArrayBuffer = await avifEncode(imageData, { quality });
+      const avifArrayBuffer = await avifEncode(imageData, { quality, lossless: true });
 
       return new Blob([avifArrayBuffer], { type: "image/avif" });
     },
