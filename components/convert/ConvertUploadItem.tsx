@@ -51,10 +51,36 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
       (async () => {
         if (targetFormatConfig == undefined) throw new Error("Error: no target format selected for one of the uploads.");
 
-        const blob = await convertToImage(upload.file, upload.sourceFormatConfig, targetFormatConfig);
-        // setOutput(blob);
-        context.setUploadConvertedBlob(uploadId, blob);
-        context.setUploadState(uploadId, "finished");
+        // const blob = await convertToImage(upload.file, upload.sourceFormatConfig, targetFormatConfig);
+        const worker = new Worker(new URL("./../../web-worker/converter.worker.ts", import.meta.url));
+
+        // worker.postMessage({ upload, targetFormatConfig });
+
+        worker.postMessage({
+          file: upload.file,
+          sourceFormatConfigId: upload.sourceFormatConfig.id,
+          targetFormatConfigId: targetFormatConfig.id
+        });
+
+        worker.onerror = (ev) => {
+          // TOOD: "error" state in S.M.
+          // console.error(ev.message);
+          worker.terminate();
+        };
+
+        worker.onmessage = ev => {
+          if (ev.data.success) {
+            context.setUploadConvertedBlob(uploadId, ev.data.blob);
+            context.setUploadState(uploadId, "finished");
+          } else {
+            // TODO: new error state in S.M.
+            // context.setUploadState(uploadId, "finished");
+          }
+          worker.terminate();
+        }
+
+        // context.setUploadConvertedBlob(uploadId, blob);
+        // context.setUploadState(uploadId, "finished");
       })();
     }
   }, [context.state]);

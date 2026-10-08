@@ -299,6 +299,7 @@ export default function Page() {
                   : (
                     <>
                       <FaDownload />
+                      {/* TODO: Download zip second option */}
                       <span>Download all</span>
                     </>
                   )
