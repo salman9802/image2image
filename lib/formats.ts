@@ -142,6 +142,47 @@ export const FORMATS: Record<string, TFormatConfig> = {
       const blob = await heicTo({ blob: file, type: "image/png" }); // lossless intermediate
       return createImageBitmap(blob);
     }
+  },
+  tiff: {
+    id: "tiff",
+    label: "TIFF",
+    extensions: ["tif", "tiff"],
+    mimeTypes: ["image/tiff"],
+    decode: async (file) => {
+      const { decode, decodeImage, toRGBA8 } = await import("utif");
+      const arrayBuffer = await file.arrayBuffer();
+      const ifds = decode(arrayBuffer);
+      if (!ifds.length) {
+        throw new Error("Error: Failed to decode TTIF file");
+      }
+      // decodes the first image/frame
+      decodeImage(arrayBuffer, ifds[0]);
+
+      const rgba = toRGBA8(ifds[0]);
+      return new ImageData(
+        new Uint8ClampedArray(rgba),
+        ifds[0].width,
+        ifds[0].height,
+      );
+    },
+    encode: async (canvas, quality) => {
+      const { encodeImage } = await import("utif");
+
+      const ctx = canvas.getContext("2d");
+      if (!ctx) throw new Error("Error: Failed to retrieve canvas context in avif encode()");
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const rgba = new Uint8Array(
+        imageData.data.buffer,
+        imageData.data.byteOffset,
+        imageData.data.byteLength
+      );
+      const arrayBuffer = encodeImage(
+        rgba,
+        imageData.width,
+        imageData.height
+      );
+      return new Blob([arrayBuffer], { type: "image/tiff" });
+    }
   }
 } as const;
 
