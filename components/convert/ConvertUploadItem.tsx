@@ -4,12 +4,11 @@ import { cn, downloadBlob, fileIcon, formatFileSize } from "@/lib/utils";
 import { ArrowRight, ChevronDown, X } from "lucide-react";
 import { Popover, PopoverTrigger, PopoverContent, PopoverHeader, PopoverTitle, PopoverDescription, } from "../ui/popover";
 import { Button } from "../ui/button";
-import { FORMATS, SUPPORTED_FORMAT_CONFIGS, TFormatConfig } from "@/lib/formats";
+import { SUPPORTED_FORMAT_CONFIGS, TFormatConfig } from "@/lib/formats";
 import React from "react";
-import { TConvertComponentState } from "@/types/convert.type";
-import { convertToImage } from "@/lib/convert";
 import { useConvert } from "@/contexts/convert";
 import { IoMdDownload } from "react-icons/io";
+import AnimatedProcessing from "./AnimatedProcessing";
 
 type TConvertUploadItemProps = {
   // state: TConvertComponentState;
@@ -144,7 +143,11 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
           "text-green-500": upload.state === "finished",
           "text-red-500": upload.state === "error"
         }
-      )}>{upload.state}</span>
+      )}>{
+          upload.state === "processing"
+            ? <AnimatedProcessing />
+            : upload.state
+        }</span>
 
       {/* filesize */}
       {/* <span className="flex-1 tabular-nums">{formatFileSize(upload.file.size)}</span> */}
