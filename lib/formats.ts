@@ -114,6 +114,29 @@ export const FORMATS: Record<string, TFormatConfig> = {
       return new Blob([avifArrayBuffer], { type: "image/avif" });
     },
     supportsQuality: true,
+  },
+  heic: {
+    id: "heic",
+    label: "HEIC/HEIF",
+    extensions: ["heic"],
+    mimeTypes: [],
+    decode: async (file) => {
+      // @ts-expect-error libheif-js ships no type declarations
+      const module = await import("libheif-js/wasm");
+      const libheif = module.default ?? module;
+
+      const decoder = new libheif.HeifDecoder();
+      const [image] = decoder.decode(new Uint8Array(await file.arrayBuffer()));
+
+      const imageData = new ImageData(image.get_width(), image.get_height());
+
+      return new Promise<ImageData>((resolve, reject) => {
+        image.display(imageData, (result: any) => {
+          if (result) resolve(result);
+          else reject(new Error("Error: Failed to decode HEIC"));
+        })
+      });
+    }
   }
 } as const;
 
