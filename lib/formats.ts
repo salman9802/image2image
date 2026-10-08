@@ -53,8 +53,8 @@ export const FORMATS: Record<string, TFormatConfig> = {
   jpeg: {
     id: "jpeg",
     label: "JPEG",
-    extensions: ["jpg", "jpeg"],
-    mimeTypes: ["image/jpeg"],
+    extensions: ["jpg", "jpeg", "jpe", "jfif"],
+    mimeTypes: ["image/jpeg", "image/jpg"],
     decode: canvasDecode,
     encode: canvasEncode("image/jpeg"),
     supportsQuality: true,
