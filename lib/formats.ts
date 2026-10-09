@@ -137,6 +137,13 @@ export const FORMATS: Record<string, TFormatConfig> = {
       //   })
       // });
 
+      try {
+        // Safari 17+ decodes HEIC natively so we can skip the lib
+        return await createImageBitmap(file);
+      } catch {
+        // fallback to the library
+      }
+
       const { heicTo } = await import("heic-to/next");
 
       const blob = await heicTo({ blob: file, type: "image/png" }); // lossless intermediate
