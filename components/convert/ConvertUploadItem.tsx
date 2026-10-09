@@ -1,7 +1,7 @@
 "use client";
 
 import { cn, downloadBlob, fileIcon, formatFileSize } from "@/lib/utils";
-import { ArrowRight, ChevronDown, X } from "lucide-react";
+import { ArrowRight, ChevronDown, CloudDownload, X } from "lucide-react";
 import { Popover, PopoverTrigger, PopoverContent, PopoverHeader, PopoverTitle, PopoverDescription, } from "../ui/popover";
 import { Button } from "../ui/button";
 import { SUPPORTED_FORMAT_CONFIGS, TFormatConfig } from "@/lib/formats";
@@ -9,6 +9,7 @@ import React from "react";
 import { useConvert } from "@/contexts/convert";
 import { IoMdDownload } from "react-icons/io";
 import AnimatedProcessing from "./AnimatedProcessing";
+import { ResponsiveTooltip } from "../ResponsiveTooltip";
 
 type TConvertUploadItemProps = {
   // state: TConvertComponentState;
@@ -124,10 +125,17 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
 
             <div className="flex flex-wrap gap-x-4 gap-y-3">
               {SUPPORTED_FORMAT_CONFIGS.filter(config => !config.mimeTypes.includes(upload.file.type)).map((supportedFormatConfig, i) => (
-                <p onClick={() => setTargetFormatConfig(supportedFormatConfig)} key={i} className="cursor-pointer bg-primary/15 px-4 py-2 text-primary font-mono">
-                  {supportedFormatConfig.extensions[0]}
-                  {/* {supportedFormatConfig.extensions.reduce((prev, curr) => `${ prev } / ${ curr }`, "").slice(0)} */}
-                </p>
+                <div className="px-4 py-2 bg-primary/15 flex items-center gap-2">
+                  <p onClick={() => setTargetFormatConfig(supportedFormatConfig)} key={i} className="text-primary font-mono">
+                    {supportedFormatConfig.extensions[0]}
+                    {/* {supportedFormatConfig.extensions.reduce((prev, curr) => `${ prev } / ${ curr }`, "").slice(0)} */}
+                  </p>
+                  {supportedFormatConfig.downloadRequiredForDecode && (
+                    <ResponsiveTooltip content={"Downloads a converter the first time you use it."}>
+                      <CloudDownload className="size-4 text-primary" strokeWidth={3} />
+                    </ResponsiveTooltip>
+                  )}
+                </div>
               ))}
             </div>
 

@@ -183,7 +183,7 @@ export default function Page() {
                 {supportedFormatConfig.extensions[0]}
               </p>
               {supportedFormatConfig.downloadRequiredForDecode && (
-                <ResponsiveTooltip content={"Downloads a converter the first time you use it"}>
+                <ResponsiveTooltip content={"Downloads a converter the first time you use it."}>
                   <CloudDownload className="size-4 text-primary" strokeWidth={3} />
                 </ResponsiveTooltip>
               )}
