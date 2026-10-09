@@ -10,7 +10,7 @@ import { getFormatConfigByMimeType } from "@/lib/convert";
 import { ACCEPTED_FORMAT_CONFIGS, detectFormat, DROPZONE_ACCEPTED_FILES, SUPPORTED_FORMAT_CONFIGS, TFormatConfig } from "@/lib/formats";
 import { cn, downloadBlob } from "@/lib/utils";
 import JSZip from "jszip";
-import { Check, ChevronDown, ChevronDownIcon, ImageUp, X } from "lucide-react";
+import { Check, ChevronDown, ChevronDownIcon, FolderArchive, ImageUp, X } from "lucide-react";
 import React from "react";
 import { useDropzone } from "react-dropzone";
 import { CgArrowsExchange, CgSpinner } from "react-icons/cg";
@@ -371,7 +371,10 @@ export default function Page() {
               </DropdownMenuTrigger>
 
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={handleDownloadZip}>Download as Zip</DropdownMenuItem>
+                <DropdownMenuItem onClick={handleDownloadZip}>
+                  <FolderArchive />
+                  Download as Zip
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           )}
