@@ -1,6 +1,7 @@
 "use client";
 
 import ConvertUploadItem from "@/components/convert/ConvertUploadItem";
+import { ResponsiveTooltip } from "@/components/ResponsiveTooltip";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
@@ -10,7 +11,7 @@ import { getFormatConfigByMimeType } from "@/lib/convert";
 import { ACCEPTED_FORMAT_CONFIGS, detectFormat, DROPZONE_ACCEPTED_FILES, SUPPORTED_FORMAT_CONFIGS, TFormatConfig } from "@/lib/formats";
 import { cn, downloadBlob } from "@/lib/utils";
 import JSZip from "jszip";
-import { Check, ChevronDown, ChevronDownIcon, FolderArchive, ImageUp, X } from "lucide-react";
+import { Check, ChevronDown, ChevronDownIcon, CloudDownload, FolderArchive, ImageUp, X } from "lucide-react";
 import React from "react";
 import { useDropzone } from "react-dropzone";
 import { CgArrowsExchange, CgSpinner } from "react-icons/cg";
@@ -173,13 +174,20 @@ export default function Page() {
       {/*   </div> */}
       {/* </div> */}
 
-      <div className="flex gap-4 items-center">
-        <h2 className="font-semibold uppercase text-muted-foreground text-sm">Accepts</h2>
+      <div className="flex gap-4 items-start">
+        <h2 className="font-semibold uppercase text-muted-foreground text-sm px-4 py-2">Accepts</h2>
         <div className="flex flex-wrap gap-x-4 gap-y-3">
           {ACCEPTED_FORMAT_CONFIGS.map((supportedFormatConfig, i) => (
-            <p key={i} className="cursor-pointer bg-primary/15 px-2 py-1 text-primary font-mono">
-              {supportedFormatConfig.extensions[0]}
-            </p>
+            <div className="px-4 py-2 bg-primary/15 flex items-center gap-2">
+              <p key={i} className="text-primary font-mono">
+                {supportedFormatConfig.extensions[0]}
+              </p>
+              {supportedFormatConfig.downloadRequiredForDecode && (
+                <ResponsiveTooltip content={"Downloads a converter the first time you use it"}>
+                  <CloudDownload className="size-4 text-primary" strokeWidth={3} />
+                </ResponsiveTooltip>
+              )}
+            </div>
           ))}
         </div>
       </div>

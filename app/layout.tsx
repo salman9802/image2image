@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Figtree, Lora } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeContextProvider } from "@/contexts/theme";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const loraHeading = Lora({ subsets: ['latin'], variable: '--font-heading' });
 
@@ -30,9 +31,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", figtree.variable, loraHeading.variable)}
     >
       <body className="min-h-full flex flex-col">
-        <ThemeContextProvider>
-          {children}
-        </ThemeContextProvider>
+        <TooltipProvider>
+          <ThemeContextProvider>
+            {children}
+          </ThemeContextProvider>
+        </TooltipProvider>
       </body>
     </html>
   );

@@ -23,6 +23,8 @@ export interface TFormatConfig {
   encode?: TEncoder;                                // present = usable as output
   decode?: TDecoder;                                // present = usable as input
   supportsQuality?: boolean;                        // show a quality slider for this output?
+  downloadRequiredForEncode?: boolean;              // boolean flag to determine if this format's encoder requires download for first time usage
+  downloadRequiredForDecode?: boolean;              // boolean flag to determine if this format's decoder requires download for first time usage
 }
 
 // ========================= Canvas-based decode/encode =========================
@@ -114,6 +116,8 @@ export const FORMATS: Record<string, TFormatConfig> = {
       return new Blob([avifArrayBuffer], { type: "image/avif" });
     },
     supportsQuality: true,
+    downloadRequiredForDecode: true,
+    downloadRequiredForEncode: true,
   },
   heic: {
     id: "heic",
@@ -148,7 +152,8 @@ export const FORMATS: Record<string, TFormatConfig> = {
 
       const blob = await heicTo({ blob: file, type: "image/png" }); // lossless intermediate
       return createImageBitmap(blob);
-    }
+    },
+    downloadRequiredForDecode: true,
   },
   tiff: {
     id: "tiff",
@@ -189,7 +194,9 @@ export const FORMATS: Record<string, TFormatConfig> = {
         imageData.height
       );
       return new Blob([arrayBuffer], { type: "image/tiff" });
-    }
+    },
+    downloadRequiredForDecode: true,
+    downloadRequiredForEncode: true,
   },
   ico: {
     id: "ico",
@@ -256,7 +263,9 @@ export const FORMATS: Record<string, TFormatConfig> = {
       const largestImage = images.reduce((a, b) => b.width * b.height > a.width * a.height ? b : a);
 
       return createImageBitmap(new Blob([largestImage.buffer], { type: "image/png" }));
-    }
+    },
+    downloadRequiredForEncode: true,
+    downloadRequiredForDecode: true,
   }
 } as const;
 
