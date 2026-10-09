@@ -3,7 +3,9 @@ import { ConvertContextProvider } from "@/contexts/convert";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <ConvertContextProvider>
-      {children}
+      <div className="bg-white dark:bg-neutral-950">
+        {children}
+      </div>
     </ConvertContextProvider>
   )
 }
