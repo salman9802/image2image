@@ -178,8 +178,8 @@ export default function Page() {
         <h2 className="font-semibold uppercase text-muted-foreground text-sm px-4 py-2">Accepts</h2>
         <div className="flex flex-wrap gap-x-4 gap-y-3">
           {ACCEPTED_FORMAT_CONFIGS.map((supportedFormatConfig, i) => (
-            <div className="px-4 py-2 bg-primary/15 flex items-center gap-2">
-              <p key={i} className="text-primary font-mono">
+            <div key={i} className="px-4 py-2 bg-primary/15 border border-primary/40 flex items-center gap-2">
+              <p className="text-primary font-mono">
                 {supportedFormatConfig.extensions[0]}
               </p>
               {supportedFormatConfig.downloadRequiredForDecode && (

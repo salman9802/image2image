@@ -125,8 +125,8 @@ export default function ConvertUploadItem({ uploadId, onFormatSelect }: TConvert
 
             <div className="flex flex-wrap gap-x-4 gap-y-3">
               {SUPPORTED_FORMAT_CONFIGS.filter(config => !config.mimeTypes.includes(upload.file.type)).map((supportedFormatConfig, i) => (
-                <div className="px-4 py-2 bg-primary/15 flex items-center gap-2">
-                  <p onClick={() => setTargetFormatConfig(supportedFormatConfig)} key={i} className="text-primary font-mono">
+                <div key={i} className="cursor-pointer px-4 py-2 bg-primary/15 border border-primary/40 flex items-center gap-2">
+                  <p onClick={() => setTargetFormatConfig(supportedFormatConfig)} className="text-primary font-mono">
                     {supportedFormatConfig.extensions[0]}
                     {/* {supportedFormatConfig.extensions.reduce((prev, curr) => `${ prev } / ${ curr }`, "").slice(0)} */}
                   </p>
