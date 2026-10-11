@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import HeroSvgAnimation from "./HeroSvgAnimation";
 
 export default function HeroSection() {
   return (
@@ -13,6 +15,18 @@ export default function HeroSection() {
       </p>
       <Button className="mt-4 font-mono text-lg px-6 py-3">Get Started</Button>
       <p className="-mt-3 text-muted-foreground text-sm font-mono">No signup required.</p>
+
+      <Image
+        className="dark:invert h-5 w-[100px]"
+        src="/L1.png"
+        alt="Image2Image logo"
+        width={100}
+        height={20}
+        priority
+      />
+
+      <HeroSvgAnimation />
+
     </div>
   )
 }
