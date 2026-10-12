@@ -1,3 +1,7 @@
+"use client";
+
+import Image from "next/image";
+
 export default function HeroSvgAnimation() {
   const inputPaths = [
     'M843.505 284.659L752.638 284.659C718.596 284.659 684.866 280.049 653.251 271.077L598.822 255.629L0.675021 1.00011',
@@ -19,11 +23,126 @@ export default function HeroSvgAnimation() {
     'M843.325 642.717L245.178 394.82L190.749 379.372C159.134 370.399 125.404 365.789 91.362 365.789L0.495 365.789',
   ];
 
+  return (
+    <div className="w-full border border-red-500 flex items-stretch relative">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="844"
+        height="644"
+        viewBox="0 0 844 644"
+        fill="none"
+      >
+        <g className="input-lines">
+          {inputPaths.map((inputPath, i) => (
+            <path
+              key={i}
+              d={inputPath}
+              stroke="black"
+            />
+          ))}
+        </g>
+      </svg>
+
+      {/* Center image container */}
+      <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 size-37.5">
+        <div className="-z-10 absolute inset-0 bg-primary/30 blur-md" />
+
+        <Image
+          className="dark:invert"
+          src="/L1.png"
+          alt="Image2Image logo"
+          width={140}
+          height={140}
+          priority
+        />
+      </div>
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        //         width="800"
+        //         height="600"
+        //         viewBox="0 0 800 600"
+        width="844"
+        height="644"
+        viewBox="0 0 844 644"
+        fill="none"
+      >
+        <g className="output-lines">
+          {outputPaths.map((outputPath, i) => (
+            <path
+              key={i}
+              d={outputPath}
+              stroke="black"
+            />
+          ))}
+        </g>
+        {/* Center image container */}
+        {/* <g transform="translate(422 322)"> */}
+        {/*   <rect */}
+        {/*     x="-66" */}
+        {/*     y="-66" */}
+        {/*     width="132" */}
+        {/*     height="132" */}
+        {/*     rx="28" */}
+        {/*     fill="var(--react-card-bg, #111827)" */}
+        {/*     stroke="#61DAFB" */}
+        {/*     strokeOpacity="0.6" */}
+        {/*     strokeWidth="1.5" */}
+        {/*   /> */}
+
+        {/* React logo */}
+        {/* <g transform="scale(1.25)" stroke="#61DAFB" strokeWidth="2.5"> */}
+        {/*   <ellipse rx="24" ry="9" /> */}
+        {/*   <ellipse rx="24" ry="9" transform="rotate(60)" /> */}
+        {/*   <ellipse rx="24" ry="9" transform="rotate(120)" /> */}
+        {/*   <circle r="3.5" fill="#61DAFB" stroke="none" /> */}
+        {/* </g> */}
+        {/* </g> */}
+      </svg>
+    </div >
+  );
+
   // return (
-  //   <section className="relative left-1/2 w-screen -translate-x-1/2">
-  //
-  //     Full Width content
+  //   <section style={{
+  //     position: "relative",
+  //     height: "100px"
+  //   }}>
+  //     <div style={{
+  //       position: "absolute",
+  //       insetBlock: 0,
+  //       left: "50%",
+  //       width: "100vw",
+  //       transform: "translateX(-50%)",
+  //       pointerEvents: "none",
+  //       zIndex: 1,
+  //       border: "1px solid black"
+  //     }}>
+  //     </div>
   //   </section>
+  // );
+
+  // return (
+  //   <section style={{
+  //     position: "relative"
+  //   }} /*className="relative left-1/2 w-screen -translate-x-1/2" */
+  //     className="h-32 border border-red-500f"
+  //   >
+  //     <div style={{
+  //       position: "absolute",
+  //       insetBlock: 0,
+  //       left: "50%",
+  //       width: "100vw",
+  //       transform: "translateX(-50%)",
+  //       pointerEvents: "none",
+  //       zIndex: -1, /* or whatever suits your stacking */
+  //     }}
+  //       className="w-screen left-1/2 absolute border border-purple-500"
+  //     >
+  //       Test SVG
+  //     </div>
+  //
+  //     {/* Full Width content */}
+  //   </section >
   // );
 
   {/* Bleeds across the entire viewport */ }
