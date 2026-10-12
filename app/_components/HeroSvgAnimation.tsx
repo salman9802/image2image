@@ -19,6 +19,81 @@ export default function HeroSvgAnimation() {
     'M843.325 642.717L245.178 394.82L190.749 379.372C159.134 370.399 125.404 365.789 91.362 365.789L0.495 365.789',
   ];
 
+  // return (
+  //   <section className="relative left-1/2 w-screen -translate-x-1/2">
+  //
+  //     Full Width content
+  //   </section>
+  // );
+
+  {/* Bleeds across the entire viewport */ }
+  return (
+    <div className="h-32 fixed inset-0 z-10 pointer-events-none w-screen" >
+      <span>Full Width content</span>
+      <div className="h-full w-full bg-blue-500/10" />
+    </div>
+  );
+
+  // return (
+  //   <div className="relative h-32 flex items-center items-stretch">
+  //     <svg
+  //
+  //       xmlns="http://www.w3.org/2000/svg"
+  //       //         width="800"
+  //       //         height="600"
+  //       //         viewBox="0 0 800 600"
+  //       width="844"
+  //       height="644"
+  //       viewBox="0 0 844 644"
+  //       fill="none"
+  //       className="absolute inset-0 flex items-stretch border border-red-500"
+  //     >
+  //       <g className="input-lines">
+  //         {inputPaths.map((inputPath, i) => (
+  //           <path
+  //             key={i}
+  //             d={inputPath}
+  //             stroke="black"
+  //           />
+  //         ))}
+  //       </g>
+  //
+  //       <g className="output-lines">
+  //         {outputPaths.map((outputPath, i) => (
+  //           <path
+  //             key={i}
+  //             d={outputPath}
+  //             stroke="black"
+  //           />
+  //         ))}
+  //       </g>
+  //
+  //       {/* Center image container */}
+  //       <g transform="translate(422 322)">
+  //         <rect
+  //           x="-66"
+  //           y="-66"
+  //           width="132"
+  //           height="132"
+  //           rx="28"
+  //           fill="var(--react-card-bg, #111827)"
+  //           stroke="#61DAFB"
+  //           strokeOpacity="0.6"
+  //           strokeWidth="1.5"
+  //         />
+  //
+  //         {/* React logo */}
+  //         <g transform="scale(1.25)" stroke="#61DAFB" strokeWidth="2.5">
+  //           <ellipse rx="24" ry="9" />
+  //           <ellipse rx="24" ry="9" transform="rotate(60)" />
+  //           <ellipse rx="24" ry="9" transform="rotate(120)" />
+  //           <circle r="3.5" fill="#61DAFB" stroke="none" />
+  //         </g>
+  //       </g>
+  //     </svg>
+  //   </div>
+  // );
+
   return (
     <div className="relative isolate">
       <div className="absolute left-1/2 w-screen -translate-x-1/2">
