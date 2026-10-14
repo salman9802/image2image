@@ -62,3 +62,7 @@ export function fileIcon(mimeType: string) {
       return <PiFileFill className="size-5 text-primary" />;
   }
 }
+
+export function randomFromArray<T>(arr: T[]) {
+  return arr[Math.random() * arr.length];
+}
