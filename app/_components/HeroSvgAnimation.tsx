@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import React from "react";
+import { gsap, useGSAP, ScrollTrigger } from "@/lib/gsap";
 
 export default function HeroSvgAnimation() {
   const inputPaths = [
@@ -23,8 +25,24 @@ export default function HeroSvgAnimation() {
     'M843.325 642.717L245.178 394.82L190.749 379.372C159.134 370.399 125.404 365.789 91.362 365.789L0.495 365.789',
   ];
 
+  // Main animation function
+  const animateHero = React.useCallback(() => {
+    // TODO: 
+    console.log("[TODO] hero animation");
+  }, []);
+
+  useGSAP(() => {
+    ScrollTrigger.create({
+      trigger: "#hero-animation",
+      start: "70% 100%",
+      once: true,
+      // markers: true,
+      onEnter: animateHero
+    });
+  }, { dependencies: [animateHero] });
+
   return (
-    <div className="w-full border border-red-500 flex items-stretch relative">
+    <div id="hero-animation" className="w-full flex items-stretch relative">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="844"
@@ -44,11 +62,11 @@ export default function HeroSvgAnimation() {
       </svg>
 
       {/* Center image container */}
-      <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 size-37.5">
+      <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 size-20 md:size-37.5">
         <div className="-z-10 absolute inset-0 bg-primary/30 blur-md" />
 
         <Image
-          className="dark:invert"
+          className="dark:invert size-17.5 md:size-35"
           src="/L1.png"
           alt="Image2Image logo"
           width={140}
