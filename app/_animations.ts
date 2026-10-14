@@ -1,3 +1,4 @@
+import { gsap } from "@/lib/gsap";
 
 /*
  * It's a plain mutable object that GSAP tweens directly. When something
@@ -23,3 +24,18 @@ export class NodeAnim {
     this.listener?.()
   }
 }
+
+export const animateSingleInputDesktop = (node: NodeAnim) => {
+  const tl = gsap.timeline()
+
+  tl.set(node, { position: 0 }, 0)
+  tl.to(node, { position: Math.random() * 0.1 + 0.4, duration: 1, ease: 'expo.out' }, 0)
+  tl.set(node, { visible: true }, 0)
+  tl.set(node, { labelVisible: true }, 0.2)
+  tl.to(node, { position: 1, duration: 1.2, ease: 'power3.in' }, 1.2)
+  tl.set(node, { labelVisible: false }, 1.6)
+  tl.set(node, { visible: false }, 1.9)
+
+  return tl
+}
+

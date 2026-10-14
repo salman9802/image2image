@@ -3,9 +3,10 @@
 import Image from "next/image";
 import React from "react";
 import { gsap, useGSAP, ScrollTrigger } from "@/lib/gsap";
-import { NodeAnim } from "../_animations";
+import { animateSingleInputDesktop, NodeAnim } from "../_animations";
 import { NodeMeta } from "./SvgNode";
 import { randomFromArray } from "@/lib/utils";
+import { inputFileSets, outputFileSets } from "../_constants";
 
 // Paths on the input side of the diagram (left)
 export const inputPaths = [
@@ -38,7 +39,7 @@ export default function HeroSvgAnimation() {
 
   // Slow-changing state: labels/colors change once per loop, so React state is fine.
   const [inputMeta, setInputMeta] = React.useState<NodeMeta[]>(() => inputPaths.map(() => ({})))
-  const [outputMeta, setoutputMeta] = React.useState<NodeMeta[]>(() => outputPaths.map(() => ({})))
+  const [outputMeta, setOutputMeta] = React.useState<NodeMeta[]>(() => outputPaths.map(() => ({})))
   const timeline = React.useRef<gsap.core.Timeline | null>(null);
 
   // We call render to sync values in JSX with (current) values in animation
@@ -51,7 +52,7 @@ export default function HeroSvgAnimation() {
   const prepareInputs = React.useCallback(() => {
     const inputFileSet = randomFromArray(inputFileSets);
 
-    const lineIndexSet = new Set();
+    const lineIndexSet = new Set<number>();
     while (lineIndexSet.size < 3) {
       lineIndexSet.add(Math.floor(Math.random() * inputAnims.length));
     }
@@ -69,14 +70,51 @@ export default function HeroSvgAnimation() {
     return lineIndexes;
   }, []);
 
+  /** Randomly selects a set of output file nodes and assigns them to output lines. */
   const prepareOutputs = React.useCallback(() => {
-    // TODO: 
+    const outputFileSet = randomFromArray(outputFileSets);
+
+    const lineIndexSet = new Set();
+    while (lineIndexSet.size < 3) {
+      lineIndexSet.add(Math.floor(Math.random() * outputAnims.length));
+    }
+
+    // Assign each line its node label (uncolored files fall back to SvgNode's default colors)
+    const lineIndexes = Array.from(lineIndexSet);
+    setOutputMeta(prev => {
+      const next = [...prev];
+      lineIndexes.forEach((lineIndex, fileIndex) => {
+        const { label, color } = outputFileSet[fileIndex];
+        next[fileIndex] = { label, dotColor: color, glowColor: color };
+      });
+      return next;
+    });
+    return lineIndexes;
   }, []);
 
   // Main animation function
   const animateHero = React.useCallback(() => {
     // TODO: 
     console.log("[TODO] hero animation");
+
+    timeline.current?.kill(); // drop the previous cycle completely
+
+    // root timeline for the entire animation
+    timeline.current = gsap.timeline({
+      onComplete: animateHero,
+      onUpdate: renderAllAnimations
+    });
+
+    prepareInputs().map((lineIndex, fileIndex) => {
+      const node = inputAnims[lineIndex];
+      timeline.current!.add(
+        // isMobile ? animateSingleInputMobile(node) : animateSingleInputDesktop(node),
+        animateSingleInputDesktop(node),
+        // fileIndex * (isMobile ? 0.4 : 0.2),
+        fileIndex * 0.2,
+      );
+    });
+
   }, []);
 
   useGSAP(() => {
@@ -89,12 +127,11 @@ export default function HeroSvgAnimation() {
       onEnter: animateHero
     });
 
-    // root timeline for the entire animation
-    timeline.current = gsap.timeline({
-      onComplete: animateHero,
-      onUpdate: renderAllAnimations
-    });
   }, { dependencies: [animateHero] });
+
+  React.useEffect(() => {
+    timeline.current?.kill();
+  }, []);
 
   return (
     <div id="hero-animation" className="w-full flex items-stretch relative">

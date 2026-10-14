@@ -64,5 +64,5 @@ export function fileIcon(mimeType: string) {
 }
 
 export function randomFromArray<T>(arr: T[]) {
-  return arr[Math.random() * arr.length];
+  return arr[Math.floor(Math.random() * arr.length)];
 }
