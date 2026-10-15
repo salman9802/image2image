@@ -1,11 +1,13 @@
 "use client";
 
+import "@/app/_css/HeroSvgAnimation.css";
+
 import Image from "next/image";
 import React from "react";
 import { gsap, useGSAP, ScrollTrigger } from "@/lib/gsap";
 import { animateSingleInputDesktop, animateSingleOutputDesktop, NodeAnim } from "../_animations";
 import { NodeMeta } from "./SvgNode";
-import { randomFromArray } from "@/lib/utils";
+import { cn, randomFromArray } from "@/lib/utils";
 import { inputFileSets, outputFileSets } from "../_constants";
 import SvgInputs from "./SvgInputs";
 
@@ -41,7 +43,9 @@ export default function HeroSvgAnimation() {
   // Slow-changing state: labels/colors change once per loop, so React state is fine.
   const [inputMeta, setInputMeta] = React.useState<NodeMeta[]>(() => inputPaths.map(() => ({})))
   const [outputMeta, setOutputMeta] = React.useState<NodeMeta[]>(() => outputPaths.map(() => ({})))
+  const [wiggleLogo, setWiggleLogo] = React.useState(false);
   const timeline = React.useRef<gsap.core.Timeline | null>(null);
+
 
   // We call render to sync values in JSX with (current) values in animation
   // Invoked by root timeline's `onUpdate` (every animation frame)
@@ -117,9 +121,12 @@ export default function HeroSvgAnimation() {
     });
 
     // TODO: spinning cogs and indicate processing
+    // timeline.current.call(() => setWiggleLogo(true), undefined, "<+0.3")
+    timeline.current.call(() => setWiggleLogo(true), undefined, "=+0.3");
     timeline.current.set({}, {}, "+=2");
 
     timeline.current.addLabel("showOutput", "<");
+    timeline.current.call(() => setWiggleLogo(false));
 
     prepareOutputs().map((lineIndex, fileIndex) => {
       const node = outputAnims[lineIndex];
@@ -130,6 +137,8 @@ export default function HeroSvgAnimation() {
         `showOutput+=${fileIndex * 0.2}`,
       );
     });
+
+    // timeline.current.call(() => setWiggleLogo(false), undefined, '>-2')
 
     timeline.current.set({}, {}, '+=0.2')
   }, []);
@@ -156,11 +165,53 @@ export default function HeroSvgAnimation() {
       <SvgInputs paths={inputPaths} anims={inputAnims} meta={inputMeta} />
 
       {/* Center image container */}
-      <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 size-20 md:size-37.5">
-        <div className="-z-10 absolute inset-0 bg-primary/30 blur-md" />
+      {/* <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 size-20 md:size-37.5"> */}
+      <div
+        className="
+        flex items-center justify-center
+        absolute z-50 top-1/2 left-1/2
+        -translate-x-1/2 -translate-y-1/2
+        p-2 size-20 md:size-37.5
+        rounded-2xl
+        border border-white/70 dark:border-white/10
+        bg-gradient-to-br
+        from-white/80 via-white/30 to-slate-300/60
+        dark:from-white/20 dark:via-white/[0.03] dark:to-white/15
+        shadow-[0_0_12px_rgba(100,116,139,0.15)]
+        dark:shadow-[0_0_20px_rgba(167,139,250,0.12)]
+        before:pointer-events-none before:absolute before:inset-0
+        before:rounded-2xl before:p-px
+        before:bg-gradient-to-br
+        before:from-white before:via-slate-300/30 before:to-transparent
+        dark:before:from-white/70 dark:before:via-violet-300/20 dark:before:to-transparent
+        before:content-['']
+        "
+      >
+        {/* {wiggleLogo && <div className="-z-10 absolute inset-0 bg-primary/30 blur-md" />} */}
+
+
+        <div
+          className="
+          absolute inset-0 z-5
+          before:content-[''] after:content-['']
+          before:absolute after:absolute
+          before:inset-0 after:inset-0
+          before:rounded-lg after:rounded-lg
+          before:blur-[10px] after:blur-[8px]
+          before:mix-blend-[color-dodge] after:mix-blend-[color-dodge]
+          before:bg-[linear-gradient(-130deg,transparent_40%,rgba(154,152,222,0.6)_50%,transparent_60%)]
+          after:bg-[linear-gradient(130deg,transparent_45%,rgba(154,152,222,0.7)_50%,transparent_60%)]
+          before:bg-size-[400%] after:bg-size-[500%]
+          before:animate-[shimmer_8s_linear_infinite]
+          after:animate-[shimmer_6s_linear_infinite]
+          "
+        />
 
         <Image
-          className="dark:invert size-17.5 md:size-35"
+          className={cn(
+            "relative z-10 size-14 md:size-30",
+            wiggleLogo && "animate-wiggle"
+          )}
           src="/L1.png"
           alt="Image2Image logo"
           width={140}
