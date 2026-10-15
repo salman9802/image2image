@@ -15,10 +15,10 @@ const ThemeContext = React.createContext<TThemeContext | null>(null);
 export function ThemeContextProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = React.useState<TTheme>("dark");
 
-  // React.useEffect(() => {
-  //   const systemTheme: TTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  //   setTheme(systemTheme);
-  // }, []);
+  React.useEffect(() => {
+    const systemTheme: TTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    setTheme(systemTheme);
+  }, []);
 
   React.useEffect(() => {
     if (theme === "light")

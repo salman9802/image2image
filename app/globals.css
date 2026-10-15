@@ -107,6 +107,19 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Custom Hero Animation vars */
+  --line-color: oklch(0.45 0.05 280);   /* base line */
+  --line-highlight: oklch(0.2 0.02 280); /* the bright middle of the line */
+
+  --fmt-jpg: #ea580c;
+  --fmt-jpeg: #d97706;
+  --fmt-webp: #059669;
+  --fmt-avif: #0d9488;
+  --fmt-heic: #db2777;
+  --fmt-tif: #dc2626;
+  --fmt-bmp: #2563eb;
+  --fmt-ico: #ca8a04;
 }
 
 .dark {
@@ -141,6 +154,19 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* Custom Hero Animation vars */
+  --line-color: #c6caff;
+  --line-highlight: white;
+
+  --fmt-jpg: #ff8d67;
+  --fmt-jpeg: #ffb347;
+  --fmt-webp: #40b782;
+  --fmt-avif: #2dd4bf;
+  --fmt-heic: #f472b6;
+  --fmt-tif: #f87171;
+  --fmt-bmp: #60a5fa;
+  --fmt-ico: #facc15;
 }
 
 @layer base {

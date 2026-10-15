@@ -41,12 +41,19 @@ const SvgInputs = ({ paths, anims, meta }: TSvgInputsProps) => {
           y2={324.167}
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset={0} stopColor="#c6caff" stopOpacity={0} />
-          <stop offset={0.2} stopColor="#c6caff" stopOpacity={0.1} />
-          <stop offset={0.4} stopColor="white" stopOpacity={0.4} />
-          <stop offset={0.6} stopColor="#c6caff" stopOpacity={0.2} />
-          <stop offset={0.8} stopColor="#c6caff" stopOpacity={0.2} />
-          <stop offset={0.9} stopColor="#c6caff" stopOpacity={0} />
+          {/* <stop offset={0} stopColor="#c6caff" stopOpacity={0} /> */}
+          {/* <stop offset={0.2} stopColor="#c6caff" stopOpacity={0.1} /> */}
+          {/* <stop offset={0.4} stopColor="white" stopOpacity={0.4} /> */}
+          {/* <stop offset={0.6} stopColor="#c6caff" stopOpacity={0.2} /> */}
+          {/* <stop offset={0.8} stopColor="#c6caff" stopOpacity={0.2} /> */}
+          {/* <stop offset={0.9} stopColor="#c6caff" stopOpacity={0} /> */}
+
+          <stop offset={0} style={{ stopColor: 'var(--line-color)' }} stopOpacity={0} />
+          <stop offset={0.2} style={{ stopColor: 'var(--line-color)' }} stopOpacity={0.1} />
+          <stop offset={0.4} style={{ stopColor: 'var(--line-highlight)' }} stopOpacity={0.4} />
+          <stop offset={0.6} style={{ stopColor: 'var(--line-color)' }} stopOpacity={0.2} />
+          <stop offset={0.8} style={{ stopColor: 'var(--line-color)' }} stopOpacity={0.2} />
+          <stop offset={0.9} style={{ stopColor: 'var(--line-color)' }} stopOpacity={0} />
         </linearGradient>
       </defs>
     </svg>
