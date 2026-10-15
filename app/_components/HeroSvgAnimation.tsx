@@ -7,6 +7,7 @@ import { animateSingleInputDesktop, NodeAnim } from "../_animations";
 import { NodeMeta } from "./SvgNode";
 import { randomFromArray } from "@/lib/utils";
 import { inputFileSets, outputFileSets } from "../_constants";
+import SvgInputs from "./SvgInputs";
 
 // Paths on the input side of the diagram (left)
 export const inputPaths = [
@@ -63,7 +64,7 @@ export default function HeroSvgAnimation() {
       const next = [...prev];
       lineIndexes.forEach((lineIndex, fileIndex) => {
         const { label, color } = inputFileSet[fileIndex];
-        next[fileIndex] = { label, dotColor: color, glowColor: color };
+        next[lineIndex] = { label, dotColor: color, glowColor: color };
       });
       return next;
     });
@@ -74,7 +75,7 @@ export default function HeroSvgAnimation() {
   const prepareOutputs = React.useCallback(() => {
     const outputFileSet = randomFromArray(outputFileSets);
 
-    const lineIndexSet = new Set();
+    const lineIndexSet = new Set<number>();
     while (lineIndexSet.size < 3) {
       lineIndexSet.add(Math.floor(Math.random() * outputAnims.length));
     }
@@ -85,7 +86,7 @@ export default function HeroSvgAnimation() {
       const next = [...prev];
       lineIndexes.forEach((lineIndex, fileIndex) => {
         const { label, color } = outputFileSet[fileIndex];
-        next[fileIndex] = { label, dotColor: color, glowColor: color };
+        next[lineIndex] = { label, dotColor: color, glowColor: color };
       });
       return next;
     });
@@ -115,6 +116,12 @@ export default function HeroSvgAnimation() {
       );
     });
 
+    // TODO: spinning cogs and indicate processing
+
+    // prepareOutputs
+
+
+    timeline.current.set({}, {}, '+=0.2')
   }, []);
 
   useGSAP(() => {
@@ -135,23 +142,8 @@ export default function HeroSvgAnimation() {
 
   return (
     <div id="hero-animation" className="w-full flex items-stretch relative">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="844"
-        height="644"
-        viewBox="0 0 844 644"
-        fill="none"
-      >
-        <g className="input-lines">
-          {inputPaths.map((inputPath, i) => (
-            <path
-              key={i}
-              d={inputPath}
-              stroke="black"
-            />
-          ))}
-        </g>
-      </svg>
+
+      <SvgInputs paths={inputPaths} anims={inputAnims} meta={inputMeta} />
 
       {/* Center image container */}
       <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 size-20 md:size-37.5">

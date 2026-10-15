@@ -66,3 +66,8 @@ export function fileIcon(mimeType: string) {
 export function randomFromArray<T>(arr: T[]) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
+
+export function setAttrs(el: Element | null, attrs: Record<string, number>) {
+  if (!el) return
+  for (const key in attrs) el.setAttribute(key, String(attrs[key]))
+}
