@@ -125,15 +125,15 @@ export default function HeroSvgAnimation() {
     });
 
     // timeline.current.call(() => setWiggleLogo(true), undefined, "<+0.3")
-    timeline.current.call(() => setWiggleLogo(true), undefined, "=+0.5");
-    timeline.current.call(() => setShowFirstCog(true), undefined, "<+0.5");
-    timeline.current.call(() => setShowSecondCog(true), undefined, "<+0.5");
+    timeline.current.call(() => setWiggleLogo(true), undefined, "=+0.3");
+    timeline.current.call(() => setShowFirstCog(true), undefined, "<+0.3");
+    timeline.current.call(() => setShowSecondCog(true), undefined, "<+0.3");
     timeline.current.set({}, {}, "+=1.5");
 
     timeline.current.addLabel("showOutput", "<");
-    timeline.current.call(() => setWiggleLogo(false));
     timeline.current.call(() => setShowFirstCog(false));
-    timeline.current.call(() => setShowSecondCog(false));
+    timeline.current.call(() => setShowSecondCog(false), undefined, "showOutput+=0.5");
+    timeline.current.call(() => setWiggleLogo(false), undefined, "showOutput+=0.5");
 
     prepareOutputs().map((lineIndex, fileIndex) => {
       const node = outputAnims[lineIndex];
