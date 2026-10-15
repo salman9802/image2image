@@ -45,6 +45,8 @@ export default function HeroSvgAnimation() {
   const [inputMeta, setInputMeta] = React.useState<NodeMeta[]>(() => inputPaths.map(() => ({})))
   const [outputMeta, setOutputMeta] = React.useState<NodeMeta[]>(() => outputPaths.map(() => ({})))
   const [wiggleLogo, setWiggleLogo] = React.useState(false);
+  const [showFirstCog, setShowFirstCog] = React.useState(false);
+  const [showSecondCog, setShowSecondCog] = React.useState(false);
   const timeline = React.useRef<gsap.core.Timeline | null>(null);
 
 
@@ -101,6 +103,7 @@ export default function HeroSvgAnimation() {
   // Main animation function
   const animateHero = React.useCallback(() => {
     // TODO: 
+    // FIX: animation not working proprely when starting in the middle
     console.log("[TODO] hero animation");
 
     timeline.current?.kill(); // drop the previous cycle completely
@@ -121,13 +124,16 @@ export default function HeroSvgAnimation() {
       );
     });
 
-    // TODO: spinning cogs and indicate processing
     // timeline.current.call(() => setWiggleLogo(true), undefined, "<+0.3")
-    timeline.current.call(() => setWiggleLogo(true), undefined, "=+0.3");
-    timeline.current.set({}, {}, "+=2");
+    timeline.current.call(() => setWiggleLogo(true), undefined, "=+0.5");
+    timeline.current.call(() => setShowFirstCog(true), undefined, "<+0.5");
+    timeline.current.call(() => setShowSecondCog(true), undefined, "<+0.5");
+    timeline.current.set({}, {}, "+=1.5");
 
     timeline.current.addLabel("showOutput", "<");
     timeline.current.call(() => setWiggleLogo(false));
+    timeline.current.call(() => setShowFirstCog(false));
+    timeline.current.call(() => setShowSecondCog(false));
 
     prepareOutputs().map((lineIndex, fileIndex) => {
       const node = outputAnims[lineIndex];
@@ -226,7 +232,6 @@ export default function HeroSvgAnimation() {
             -left-16
             -top-16
 
-            scale-100 opacity-100
             transition-[scale,opacity] duration-300 ease-out
 
             inline-flex items-center justify-center
@@ -239,8 +244,9 @@ export default function HeroSvgAnimation() {
             dark:shadow-[0_2px_12px_rgba(139,92,246,0.12)]
             shiny-border
             animate-bounce
+            scale-0 opacity-0
             `,
-            wiggleLogo ? "starting:scale-100 starting:opacity-1" : "scale-0 opacity-0"
+            showFirstCog && "scale-100 opacity-100"
           )}
         >
           <Cog className="animate-spin size-5 text-slate-700 dark:text-slate-200" />
@@ -252,7 +258,6 @@ export default function HeroSvgAnimation() {
             -right-16
             -bottom-16
 
-            scale-100 opacity-100
             transition-[scale,opacity] duration-300 ease-out
             starting:scale-75 starting:opacity-0
 
@@ -266,8 +271,9 @@ export default function HeroSvgAnimation() {
             dark:shadow-[0_2px_12px_rgba(139,92,246,0.12)]
             shiny-border
             animate-bounce
+            scale-0 opacity-0
             `,
-            wiggleLogo ? "starting:scale-100 starting:opacity-1" : "scale-0 opacity-0"
+            showSecondCog && "scale-100 opacity-100"
           )}
         >
           <Cog className="animate-spin size-5 text-slate-700 dark:text-slate-200" />
