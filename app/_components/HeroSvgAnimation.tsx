@@ -10,6 +10,7 @@ import { NodeMeta } from "./SvgNode";
 import { cn, randomFromArray } from "@/lib/utils";
 import { inputFileSets, outputFileSets } from "../_constants";
 import SvgInputs from "./SvgInputs";
+import { Cog } from "lucide-react";
 
 // Paths on the input side of the diagram (left)
 export const inputPaths = [
@@ -209,15 +210,69 @@ export default function HeroSvgAnimation() {
 
         <Image
           className={cn(
-            "relative z-10 size-14 md:size-30",
+            "relative z-10 size-14 md:size-24",
             wiggleLogo && "animate-wiggle"
           )}
           src="/L1.png"
           alt="Image2Image logo"
-          width={140}
-          height={140}
+          width={96}
+          height={96}
           priority
         />
+
+        <div
+          className={cn(`
+            absolute
+            -left-16
+            -top-16
+
+            scale-100 opacity-100
+            transition-[scale,opacity] duration-300 ease-out
+
+            inline-flex items-center justify-center
+            size-10 rounded-xl p-2
+            border border-white/70 dark:border-white/10
+            bg-gradient-to-br
+            from-white/90 via-slate-100/70 to-slate-200/80
+            dark:from-white/10 dark:via-white/[0.03] dark:to-violet-400/[0.08]
+            shadow-sm shadow-slate-400/20
+            dark:shadow-[0_2px_12px_rgba(139,92,246,0.12)]
+            shiny-border
+            animate-bounce
+            `,
+            wiggleLogo ? "starting:scale-100 starting:opacity-1" : "scale-0 opacity-0"
+          )}
+        >
+          <Cog className="animate-spin size-5 text-slate-700 dark:text-slate-200" />
+        </div>
+
+        <div
+          className={cn(`
+            absolute
+            -right-16
+            -bottom-16
+
+            scale-100 opacity-100
+            transition-[scale,opacity] duration-300 ease-out
+            starting:scale-75 starting:opacity-0
+
+            inline-flex items-center justify-center
+            size-10 rounded-xl p-2
+            border border-white/70 dark:border-white/10
+            bg-gradient-to-br
+            from-white/90 via-slate-100/70 to-slate-200/80
+            dark:from-white/10 dark:via-white/[0.03] dark:to-violet-400/[0.08]
+            shadow-sm shadow-slate-400/20
+            dark:shadow-[0_2px_12px_rgba(139,92,246,0.12)]
+            shiny-border
+            animate-bounce
+            `,
+            wiggleLogo ? "starting:scale-100 starting:opacity-1" : "scale-0 opacity-0"
+          )}
+        >
+          <Cog className="animate-spin size-5 text-slate-700 dark:text-slate-200" />
+        </div>
+
       </div>
 
 
