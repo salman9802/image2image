@@ -3,7 +3,7 @@
 import Image from "next/image";
 import React from "react";
 import { gsap, useGSAP, ScrollTrigger } from "@/lib/gsap";
-import { animateSingleInputDesktop, NodeAnim } from "../_animations";
+import { animateSingleInputDesktop, animateSingleOutputDesktop, NodeAnim } from "../_animations";
 import { NodeMeta } from "./SvgNode";
 import { randomFromArray } from "@/lib/utils";
 import { inputFileSets, outputFileSets } from "../_constants";
@@ -117,9 +117,19 @@ export default function HeroSvgAnimation() {
     });
 
     // TODO: spinning cogs and indicate processing
+    timeline.current.set({}, {}, "+=2");
 
-    // prepareOutputs
+    timeline.current.addLabel("showOutput", "<");
 
+    prepareOutputs().map((lineIndex, fileIndex) => {
+      const node = outputAnims[lineIndex];
+      timeline.current!.add(
+        // isMobile ? animateSingleInputMobile(node) : animateSingleInputDesktop(node),
+        animateSingleOutputDesktop(node),
+        // fileIndex * (isMobile ? 0.4 : 0.2),
+        `showOutput+=${fileIndex * 0.2}`,
+      );
+    });
 
     timeline.current.set({}, {}, '+=0.2')
   }, []);
@@ -159,48 +169,53 @@ export default function HeroSvgAnimation() {
         />
       </div>
 
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        //         width="800"
-        //         height="600"
-        //         viewBox="0 0 800 600"
-        width="844"
-        height="644"
-        viewBox="0 0 844 644"
-        fill="none"
-      >
-        <g className="output-lines">
-          {outputPaths.map((outputPath, i) => (
-            <path
-              key={i}
-              d={outputPath}
-              stroke="black"
-            />
-          ))}
-        </g>
-        {/* Center image container */}
-        {/* <g transform="translate(422 322)"> */}
-        {/*   <rect */}
-        {/*     x="-66" */}
-        {/*     y="-66" */}
-        {/*     width="132" */}
-        {/*     height="132" */}
-        {/*     rx="28" */}
-        {/*     fill="var(--react-card-bg, #111827)" */}
-        {/*     stroke="#61DAFB" */}
-        {/*     strokeOpacity="0.6" */}
-        {/*     strokeWidth="1.5" */}
-        {/*   /> */}
 
-        {/* React logo */}
-        {/* <g transform="scale(1.25)" stroke="#61DAFB" strokeWidth="2.5"> */}
-        {/*   <ellipse rx="24" ry="9" /> */}
-        {/*   <ellipse rx="24" ry="9" transform="rotate(60)" /> */}
-        {/*   <ellipse rx="24" ry="9" transform="rotate(120)" /> */}
-        {/*   <circle r="3.5" fill="#61DAFB" stroke="none" /> */}
-        {/* </g> */}
-        {/* </g> */}
-      </svg>
+      <SvgInputs paths={outputPaths} anims={outputAnims} meta={outputMeta} />
+
+      {
+        //       <svg
+        //         xmlns="http://www.w3.org/2000/svg"
+        //         //         width="800"
+        //         //         height="600"
+        //         //         viewBox="0 0 800 600"
+        //         width="844"
+        //         height="644"
+        //         viewBox="0 0 844 644"
+        //         fill="none"
+        //       >
+        //         <g className="output-lines">
+        //           {outputPaths.map((outputPath, i) => (
+        //             <path
+        //               key={i}
+        //               d={outputPath}
+        //               stroke="black"
+        //             />
+        //           ))}
+        //         </g>
+        //         {/* Center image container */}
+        //         {/* <g transform="translate(422 322)"> */}
+        //         {/*   <rect */}
+        //         {/*     x="-66" */}
+        //         {/*     y="-66" */}
+        //         {/*     width="132" */}
+        //         {/*     height="132" */}
+        //         {/*     rx="28" */}
+        //         {/*     fill="var(--react-card-bg, #111827)" */}
+        //         {/*     stroke="#61DAFB" */}
+        //         {/*     strokeOpacity="0.6" */}
+        //         {/*     strokeWidth="1.5" */}
+        //         {/*   /> */}
+
+        //         {/* React logo */}
+        //         {/* <g transform="scale(1.25)" stroke="#61DAFB" strokeWidth="2.5"> */}
+        //         {/*   <ellipse rx="24" ry="9" /> */}
+        //         {/*   <ellipse rx="24" ry="9" transform="rotate(60)" /> */}
+        //         {/*   <ellipse rx="24" ry="9" transform="rotate(120)" /> */}
+        //         {/*   <circle r="3.5" fill="#61DAFB" stroke="none" /> */}
+        //         {/* </g> */}
+        //         {/* </g> */}
+        //       </svg>
+      }
     </div >
   );
 

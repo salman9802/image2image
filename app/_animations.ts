@@ -14,28 +14,42 @@ export class NodeAnim {
 
   /** Called by <SvgNode> on mount. Returns an unsubscribe function. */
   subscribe(fn: () => void) {
-    this.listener = fn
+    this.listener = fn;
     return () => {
-      if (this.listener === fn) this.listener = null
+      if (this.listener === fn) this.listener = null;
     }
   }
 
   render() {
-    this.listener?.()
+    this.listener?.();
   }
 }
 
 export const animateSingleInputDesktop = (node: NodeAnim) => {
-  const tl = gsap.timeline()
+  const tl = gsap.timeline();
 
-  tl.set(node, { position: 0 }, 0)
-  tl.to(node, { position: Math.random() * 0.1 + 0.4, duration: 1, ease: 'expo.out' }, 0)
-  tl.set(node, { visible: true }, 0)
-  tl.set(node, { labelVisible: true }, 0.2)
-  tl.to(node, { position: 1, duration: 1.2, ease: 'power3.in' }, 1.2)
-  tl.set(node, { labelVisible: false }, 1.6)
-  tl.set(node, { visible: false }, 1.9)
+  tl.set(node, { position: 0 }, 0);
+  tl.to(node, { position: Math.random() * 0.1 + 0.4, duration: 1, ease: 'expo.out' }, 0);
+  tl.set(node, { visible: true }, 0);
+  tl.set(node, { labelVisible: true }, 0.2);
+  tl.to(node, { position: 1, duration: 1.2, ease: 'power3.in' }, 1.2);
+  tl.set(node, { labelVisible: false }, 1.6);
+  tl.set(node, { visible: false }, 1.9);
 
-  return tl
+  return tl;
 }
 
+
+export const animateSingleOutputDesktop = (node: NodeAnim) => {
+  const tl = gsap.timeline();
+
+  tl.set(node, { position: 0 }, 0);
+  tl.to(node, { position: Math.random() * 0.1 + 0.4, duration: 1, ease: 'expo.out' }, 0);
+  tl.set(node, { visible: true }, 0);
+  tl.set(node, { labelVisible: true }, 0.2);
+  tl.to(node, { position: 1, duration: 1.2, ease: 'power3.in' }, 1.2);
+  tl.set(node, { labelVisible: false }, 1.6);
+  tl.set(node, { visible: false }, 1.9);
+
+  return tl;
+}
