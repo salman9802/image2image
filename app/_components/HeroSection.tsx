@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import HeroSvgAnimation from "./HeroSvgAnimation";
+import Link from "next/link";
 
 export default function HeroSection() {
   return (
@@ -14,7 +15,7 @@ export default function HeroSection() {
       <p className="font-mono mx-auto max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
         Convert images betweeen formats in seconds. Free, simple, and right in your browser.
       </p>
-      <Button className="mt-4 font-mono text-lg px-6 py-3">Get Started</Button>
+      <Link href="/convert" className="mt-4 font-mono text-lg px-6 py-3"><Button>Get Started</Button></Link>
       <p className="-mt-3 text-muted-foreground text-sm font-mono">No signup required.</p>
 
       {/* <Image */}
