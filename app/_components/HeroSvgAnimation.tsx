@@ -102,10 +102,6 @@ export default function HeroSvgAnimation() {
 
   // Main animation function
   const animateHero = React.useCallback(() => {
-    // TODO: 
-    // FIX: animation not working proprely when starting in the middle
-    console.log("[TODO] hero animation");
-
     timeline.current?.kill(); // drop the previous cycle completely
 
     // root timeline for the entire animation
@@ -162,9 +158,9 @@ export default function HeroSvgAnimation() {
 
   }, { dependencies: [animateHero] });
 
-  React.useEffect(() => {
-    timeline.current?.kill();
-  }, []);
+  // React.useEffect(() => {
+  //   timeline.current?.kill();
+  // }, []);
 
   return (
     <div id="hero-animation" className="w-full flex items-stretch relative">
