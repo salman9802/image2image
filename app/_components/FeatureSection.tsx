@@ -35,7 +35,7 @@ const FeatureSection = () => {
       {/* Left/Top section */}
       <div className="flex-1 flex flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <h1 className="font-semibold text-lg md:text-xl lg:text-2xl">There's no server to send it to.</h1>
+          <h1 className="font-semibold text-xl md:text-2xl lg:text-3xl">There's no server to send it to.</h1>
           <p className="text-muted-foreground">This tool is a static site. Privacy isn't a policy you have to trust, it's how the thing is built.</p>
         </div>
 
@@ -43,7 +43,7 @@ const FeatureSection = () => {
         {FEATURES.map((feature, i) => (
           <React.Fragment key={i}>
             <div className="flex flex-col gap-1 mb-1">
-              <h2 className="font-semibold text-lg lg:text-xl">{feature.title}</h2>
+              <h2 className="font-semibold lg:text-xl">{feature.title}</h2>
               <p className="text-muted-foreground">{feature.content}</p>
             </div>
 
@@ -59,33 +59,33 @@ const FeatureSection = () => {
         {/* Top */}
         <div className="flex flex-col">
           {/* Your device section */}
-          <div className="border border-primary relative flex items-center p-16">
+          <div className="border border-primary relative flex items-center py-16 px-4 md:px-12 lg:px-16">
             <span className="absolute -top-3 left-4 text-primary px-2 bg-neutral-50 dark:bg-black">Your device</span>
 
             <div className="relative flex flex-col gap-2">
-              <div className="border border-border p-6">
+              <div className="border border-border p-2 md:p-6">
                 <FileImage className="size-6" />
               </div>
-              <span className="absolute -bottom-8 text-nowrap text-sm">Your file</span>
+              <span className="absolute -bottom-8 text-nowrap text-xs md:text-sm">Your file</span>
             </div>
 
             <DiagramHorizontalLine />
 
             <div className="relative flex flex-col gap-2">
-              <div className="border border-border p-6">
+              <div className="border border-border p-2 md:p-6">
                 <Cpu className="size-6" />
               </div>
-              <span className="absolute -bottom-8 text-nowrap text-sm">Converter</span>
-              <span className="absolute -bottom-12 text-muted-foreground text-nowrap text-xs">Web Worker</span>
+              <span className="absolute -bottom-8 text-nowrap text-xs md:text-sm">Converter</span>
+              <span className="absolute -bottom-12 text-muted-foreground text-nowrap text-[8px] md:text-xs">Web Worker</span>
             </div>
 
             <DiagramHorizontalLine />
 
             <div className="relative flex flex-col gap-2">
-              <div className="border border-border p-6">
+              <div className="border border-border p-2 md:p-6">
                 <FileCheck className="size-6" />
               </div>
-              <span className="absolute -bottom-8 text-nowrap text-sm">Result</span>
+              <span className="absolute -bottom-8 text-nowrap text-xs md:text-sm">Result</span>
             </div>
 
 
