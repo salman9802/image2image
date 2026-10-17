@@ -1,15 +1,15 @@
-import Image from "next/image";
 import HeroSection from "./_components/HeroSection";
-import { Button } from "@/components/ui/button";
-import { useTheme } from "@/contexts/theme";
+import FeatureSection from "./_components/FeatureSection";
 
 export default function Home() {
 
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-neutral-50 font-sans dark:bg-black">
+    <div className="overflow-x-hidden flex flex-col flex-1 items-center justify-center bg-neutral-50 font-sans dark:bg-black">
       <main className="flex flex-1 w-full flex-col items-center justify-between py-32 bg-neutral-50 dark:bg-black">
         {/* <main> */}
         <HeroSection />
+
+        <FeatureSection />
 
         {/* <Centered> */}
         {/*   <Image */}
