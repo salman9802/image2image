@@ -20,6 +20,7 @@ const SvgInputs = ({ paths, anims, meta }: TSvgInputsProps) => {
       height="644"
       viewBox="0 0 844 644"
       fill="none"
+      className="block h-auto w-full"
     >
       {paths.map((inputPath, i) => (
         <g key={i}>

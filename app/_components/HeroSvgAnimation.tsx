@@ -151,6 +151,7 @@ export default function HeroSvgAnimation() {
     ScrollTrigger.create({
       trigger: "#hero-animation",
       start: "70% 100%",
+      // start: "top 100%",
       once: true,
       // markers: true,
       onEnter: animateHero
@@ -231,7 +232,7 @@ export default function HeroSvgAnimation() {
             transition-[scale,opacity] duration-300 ease-out
 
             inline-flex items-center justify-center
-            size-10 rounded-xl p-2
+            size-10 rounded-xl p-1 md:p-2
             border border-white/70 dark:border-white/10
             bg-gradient-to-br
             from-white/90 via-slate-100/70 to-slate-200/80
@@ -245,7 +246,7 @@ export default function HeroSvgAnimation() {
             showFirstCog && "scale-100 opacity-100"
           )}
         >
-          <Cog className="animate-spin size-5 text-slate-700 dark:text-slate-200" />
+          <Cog className="animate-spin size-3 md:size-5 text-slate-700 dark:text-slate-200" />
         </div>
 
         <div
@@ -258,7 +259,7 @@ export default function HeroSvgAnimation() {
             starting:scale-75 starting:opacity-0
 
             inline-flex items-center justify-center
-            size-10 rounded-xl p-2
+            size-10 rounded-xl p-1 md:p-2
             border border-white/70 dark:border-white/10
             bg-gradient-to-br
             from-white/90 via-slate-100/70 to-slate-200/80
@@ -272,7 +273,7 @@ export default function HeroSvgAnimation() {
             showSecondCog && "scale-100 opacity-100"
           )}
         >
-          <Cog className="animate-spin size-5 text-slate-700 dark:text-slate-200" />
+          <Cog className="animate-spin size-3 md:size-5 text-slate-700 dark:text-slate-200" />
         </div>
 
       </div>
