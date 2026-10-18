@@ -68,6 +68,7 @@ function Footer() {
       <div className="flex items-center gap-2 text-muted-foreground text-sm">
         <span>&copy;</span>
         <span>{new Date().getFullYear()} Image2Image</span>
+        <span className="text-xs">({process.env.NEXT_PUBLIC_APP_VERSION})</span>
         <span>&mdash;</span>
         <a
           href="https://github.com/salman9802/"

@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { version } from "./package.json"
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -7,6 +8,10 @@ const nextConfig: NextConfig = {
   images: { unoptimized: true },
 
   allowedDevOrigins: ['192.168.1.3'],
+
+  env: {
+    NEXT_PUBLIC_APP_VERSION: version
+  }
 
   // distDir: "build"
 
