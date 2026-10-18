@@ -193,9 +193,9 @@ const FeatureSection = () => {
                 className="flex items-center justify-between"
               >
                 <p className="font-semibold text-muted-foreground flex items-center gap-2">
-                  <span>{feed.from}</span>
+                  <span className="text-primary">{feed.from}</span>
                   <span className="font-normal">to</span>
-                  <span>{feed.to}</span>
+                  <span className="text-primary">{feed.to}</span>
                 </p>
                 <p className="text-green-500 tabular-nums">{feed.ms} ms</p>
               </motion.div>
