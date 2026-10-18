@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Figtree, Lora } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { ThemeContextProvider } from "@/contexts/theme";
+import { ThemeContextProvider, useTheme } from "@/contexts/theme";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import {
   FaGithub,
   FaLinkedinIn,
   FaTelegramPlane,
 } from "react-icons/fa";
+import { Moon, Sun } from "lucide-react";
+import { Header } from "./_components/Header";
 
 const loraHeading = Lora({ subsets: ['latin'], variable: '--font-heading' });
 
@@ -38,14 +40,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         <TooltipProvider>
           <ThemeContextProvider>
+            <Header />
             {children}
+            <Footer />
           </ThemeContextProvider>
         </TooltipProvider>
-        <Footer />
       </body>
     </html>
   );
 }
+
+// ========================= Local Components =========================
 
 const SOCIALS = [
   {
@@ -68,7 +73,7 @@ function Footer() {
       <div className="flex items-center gap-2 text-muted-foreground text-sm">
         <span>&copy;</span>
         <span>{new Date().getFullYear()} Image2Image</span>
-        <span className="text-xs">({process.env.NEXT_PUBLIC_APP_VERSION})</span>
+        <span className="text-xs tabular-nums">({process.env.NEXT_PUBLIC_APP_VERSION})</span>
         <span>&mdash;</span>
         <a
           href="https://github.com/salman9802/"

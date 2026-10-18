@@ -11,6 +11,7 @@ import { cn, randomFromArray } from "@/lib/utils";
 import { inputFileSets, outputFileSets } from "../_constants";
 import SvgInputs from "./SvgInputs";
 import { Cog } from "lucide-react";
+import { useTheme } from "@/contexts/theme";
 
 // Paths on the input side of the diagram (left)
 export const inputPaths = [
@@ -36,6 +37,7 @@ export const outputPaths = [
 
 
 export default function HeroSvgAnimation() {
+  const { theme } = useTheme();
 
   // Fast-changing animation state: plain mutable objects, never trigger renders.
   const [inputAnims] = React.useState(() => inputPaths.map(() => new NodeAnim()))
@@ -216,7 +218,7 @@ export default function HeroSvgAnimation() {
             "relative z-10 size-14 md:size-24",
             wiggleLogo && "animate-wiggle"
           )}
-          src="/L1.png"
+          src={theme === "light" ? "/image2image-mark.svg" : "/image2image-mark-light.svg"}
           alt="Image2Image logo"
           width={96}
           height={96}
