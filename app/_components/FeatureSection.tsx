@@ -3,7 +3,8 @@
 import { Separator } from "@/components/ui/separator"
 import { Cpu, FileCheck, FileImage, Server, X } from "lucide-react";
 import React from "react";
-import { PiFileFill } from "react-icons/pi";
+import { motion } from "motion/react";
+import { gsap, useGSAP } from "@/lib/gsap";
 
 type TFeature = {
   title: string;
@@ -28,7 +29,66 @@ const FEATURES: TFeature[] = [
   }
 ];
 
+const CONVERSIONS = [
+  { from: "photo.heic", to: "png", ms: 412 },
+  { from: "banner.png", to: "webp", ms: 96 },
+  { from: "logo.svg", to: "ico", ms: 38 },
+  { from: "scan.tiff", to: "jpeg", ms: 240 },
+  { from: "shot.avif", to: "png", ms: 130 },
+];
+
+type TFeedLine = typeof CONVERSIONS[number] & { id: number; };
+
 const FeatureSection = () => {
+  const [feed, setFeed] = React.useState<TFeedLine[]>([{ id: 0, ...(CONVERSIONS[0]) }]);
+
+  const firstDotRef = React.useRef<null | HTMLDivElement>(null);
+  const secondDotRef = React.useRef<null | HTMLDivElement>(null);
+
+  useGSAP(() => {
+    let n = 0;
+    const tl = gsap.timeline({ repeat: -1 });
+
+    tl.set({}, {}, "+=1");
+    tl.call(() => {
+      const r = Math.random();
+      gsap.set(firstDotRef.current, {
+        rotate: r < 0.5 ? 45 : 0,
+      });
+      gsap.set(secondDotRef.current, {
+        rotate: r >= 0.5 ? 45 : 0,
+      });
+    });
+    // tl.call(() => setWiggleLogo(true), undefined, "=+0.3");
+
+    tl.fromTo(firstDotRef.current,
+      {
+        left: "-10%",
+      },
+      {
+        left: "110%",
+        duration: 0.5
+      }
+    );
+
+    tl.fromTo(secondDotRef.current,
+      {
+        left: "-10%",
+      },
+      {
+        left: "110%",
+        duration: 0.5,
+        delay: 0.3
+      }
+    );
+
+    tl.call(() => {
+      n++;
+      setFeed(prev => ([...prev, { id: n, ...CONVERSIONS[n % CONVERSIONS.length] }].slice(-3)));
+    });
+
+  }, { dependencies: [] });
+
   return (
     <div className="w-11/12 mx-auto my-24 font-mono flex gap-6 flex-col md:flex-row md:gap-12 md:w-3/4 lg:w-4/5">
 
@@ -63,26 +123,32 @@ const FeatureSection = () => {
             <span className="absolute -top-3 left-4 text-primary px-2 bg-neutral-50 dark:bg-black">Your device</span>
 
             <div className="relative flex flex-col gap-2">
-              <div className="border border-border p-2 md:p-6">
+              <div className="z-20 bg-background border border-border p-2 md:p-6">
                 <FileImage className="size-6" />
               </div>
               <span className="absolute -bottom-8 text-nowrap text-xs md:text-sm">Your file</span>
             </div>
 
-            <DiagramHorizontalLine />
+            <div className="w-full relative">
+              <DiagramHorizontalLine />
+              <div ref={firstDotRef} className="absolute size-3 bg-primary top-1/2 -translate-y-1/2 left-full z-10" />
+            </div>
 
             <div className="relative flex flex-col gap-2">
-              <div className="border border-border p-2 md:p-6">
+              <div className="z-20 bg-background border border-border p-2 md:p-6">
                 <Cpu className="size-6" />
               </div>
               <span className="absolute -bottom-8 text-nowrap text-xs md:text-sm">Converter</span>
               <span className="absolute -bottom-12 text-muted-foreground text-nowrap text-[8px] md:text-xs">Web Worker</span>
             </div>
 
-            <DiagramHorizontalLine />
+            <div className="w-full relative">
+              <DiagramHorizontalLine />
+              <div ref={secondDotRef} className="absolute size-3 bg-primary top-1/2 -translate-y-1/2 left-full z-10" />
+            </div>
 
             <div className="relative flex flex-col gap-2">
-              <div className="border border-border p-2 md:p-6">
+              <div className="z-20 bg-background border border-border p-2 md:p-6">
                 <FileCheck className="size-6" />
               </div>
               <span className="absolute -bottom-8 text-nowrap text-xs md:text-sm">Result</span>
@@ -117,24 +183,23 @@ const FeatureSection = () => {
           {/* Conversion Logs */}
           <div className="flex flex-col gap-2">
 
-            <div className="flex items-center justify-between">
-              <p className="font-semibold text-muted-foreground flex items-center gap-2">
-                <span>banner.png</span>
-                <span className="font-normal">to</span>
-                <span>webp</span>
-              </p>
-              <p className="text-green-500 tabular-nums">63 ms</p>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <p className="font-semibold text-muted-foreground flex items-center gap-2">
-                <span>scan.tiff</span>
-                <span className="font-normal">to</span>
-                <span>jpeg</span>
-              </p>
-              <p className="text-green-500 tabular-nums">240 ms</p>
-            </div>
-
+            {feed.map((feed) => (
+              <motion.div
+                key={feed.id}
+                initial={{ opacity: 0, y: 4 }}
+                whileInView={"animate"}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="flex items-center justify-between"
+              >
+                <p className="font-semibold text-muted-foreground flex items-center gap-2">
+                  <span>{feed.from}</span>
+                  <span className="font-normal">to</span>
+                  <span>{feed.to}</span>
+                </p>
+                <p className="text-green-500 tabular-nums">{feed.ms} ms</p>
+              </motion.div>
+            ))}
           </div>
 
           <div className="my-2">
