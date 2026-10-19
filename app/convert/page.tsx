@@ -161,8 +161,6 @@ export default function Page() {
         <p>Convert your images to any supported format.</p>
       </div>
 
-      <Button onClick={() => setTheme(prev => prev === "light" ? "dark" : "light")}>Toggle Dark/Light (current: {theme})</Button>
-
       {/* <div className="w-full flex flex-col gap-4"> */}
       {/*   <h2 className="font-semibold uppercase text-primary text-xl md:text-2xl">Accepted Files:</h2> */}
       {/*   <div className="flex flex-wrap gap-x-4 gap-y-3"> */}

@@ -12,7 +12,7 @@ export function Header() {
 
   return (
     <div className="p-6 bg-primary flex justify-between items-center">
-      <div className="w-fit text-neutral-500">
+      <Link href="/" className="w-fit text-neutral-500">
         <Image
           src="/image2image-logo.svg"
           alt="Logo"
@@ -20,7 +20,7 @@ export function Header() {
           height="44"
           className="w-auto invert"
         />
-      </div>
+      </Link>
 
       <div className="w-fit flex items-center gap-4">
 
