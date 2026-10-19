@@ -2,6 +2,8 @@
 
 import React from "react";
 
+// NOTE: when changing this value, also update root layout head's script tag
+// It isn't referenced there to prevent theme flashing
 export const THEME_STORAGE_KEY = "thi2i";
 
 export type TTheme = "light" | "dark";

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Figtree, Lora } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { ThemeContextProvider, useTheme } from "@/contexts/theme";
+import { THEME_STORAGE_KEY, ThemeContextProvider, useTheme } from "@/contexts/theme";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Header } from "./_components/Header";
 import { Footer } from "./_components/Footer";
@@ -31,7 +31,21 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", figtree.variable, loraHeading.variable)}
+      suppressHydrationWarning
     >
+      <head>
+        {/*
+          NOTE: We add `<script />` in head to ensure it runs before any paint by the browser.
+          The script tries reading localStorage (if available) and sets theme accordingly.
+          Referenced from: https://nextjs.org/docs/app/guides/preventing-flash-before-hydration#themes
+          although they used data attributes for theming
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{ var t = localStorage.getItem("thi2i"); if(t) document.documentElement.classList.toggle("dark", t === "dark")}catch(e){}})()`
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">
         <TooltipProvider>
           <ThemeContextProvider>
