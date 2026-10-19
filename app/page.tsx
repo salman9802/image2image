@@ -1,5 +1,12 @@
 import HeroSection from "./_components/HeroSection";
 import FeatureSection from "./_components/FeatureSection";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/"
+  }
+}
 
 export default function Home() {
 
