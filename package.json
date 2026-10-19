@@ -9,6 +9,7 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix"
   },
+  "license": "AGPL-3.0",
   "dependencies": {
     "@base-ui/react": "^1.8.0",
     "@gsap/react": "^2.1.2",
