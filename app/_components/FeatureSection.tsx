@@ -63,7 +63,7 @@ const FeatureSection = () => {
 
     tl.fromTo(firstDotRef.current,
       {
-        left: "-10%",
+        left: "-40%",
       },
       {
         left: "110%",
@@ -73,7 +73,7 @@ const FeatureSection = () => {
 
     tl.fromTo(secondDotRef.current,
       {
-        left: "-10%",
+        left: "-40%",
       },
       {
         left: "110%",
