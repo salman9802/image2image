@@ -1,10 +1,11 @@
 import { Metadata } from "next";
+import { asset } from "./asset";
 
 export const SITE = {
   name: "Image2Image",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   description: "Convert images between formats entirely in your browser. No uploads, no server. JPEG, PNG, WebP, AVIF, HEIC and more.",
-  ogImage: "/og.png", // 
+  ogImage: asset("/og.png"), // 
 }
 
 // Shared so child pages can reuse the image
