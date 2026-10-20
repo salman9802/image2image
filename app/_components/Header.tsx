@@ -22,15 +22,15 @@ export function Header() {
         />
       </Link>
 
-      <div className="w-fit flex items-center gap-4">
+      <div className="ml-4 w-fit flex items-center gap-4">
 
-        <div className="w-fit border border-neutral-50 p-2 tabular-nums text-neutral-50">
-          {process.env.NEXT_PUBLIC_APP_VERSION}
+        <div className="-me-3 text-xs w-fit p-2 tabular-nums text-neutral-200">
+          v{process.env.NEXT_PUBLIC_APP_VERSION}
         </div>
 
         <Link href="https://github.com/salman9802/image2image" target="_blank" rel="noopener noreferrer" className="cursor-pointer flex items-center justify-center gap-2 p-2 text-neutral-50 hover:opacity-90">
           <FaGithub className="size-5" />
-          <span className="font-semibold">Github</span>
+          <span className="font-semibold hidden md:inline-block">Github</span>
         </Link>
 
         <div className="relative w-fit bg-background p-3 flex gap-6 before:content-[''] before:absolute before:inset-y-0 before:w-1/2 before:left-0 before:z-10 before:bg-accent">

@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
 
   images: { unoptimized: true },
 
-  allowedDevOrigins: ['192.168.1.3'],
+  allowedDevOrigins: ['192.168.1.9'],
 
   env: {
     NEXT_PUBLIC_APP_VERSION: version
