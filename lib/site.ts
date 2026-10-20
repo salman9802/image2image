@@ -3,7 +3,7 @@ import { asset } from "./asset";
 
 export const SITE = {
   name: "Image2Image",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  url: process.env.NODE_ENV === "production" ? "https://salman9802.github.io/image2image" : "http://localhost:3000",
   description: "Convert images between formats entirely in your browser. No uploads, no server. JPEG, PNG, WebP, AVIF, HEIC and more.",
   ogImage: asset("/og.png"), // 
 }
