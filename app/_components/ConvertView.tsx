@@ -125,7 +125,7 @@ export function ConvertView() {
         <p>Convert your images to any supported format.</p>
       </div>
 
-      <div className="flex gap-4 items-start">
+      <div className="flex flex-col gap-4 items-start md:flex-row">
         <h2 className="font-semibold uppercase text-muted-foreground text-sm px-4 py-2">Accepts</h2>
         <div className="flex flex-wrap gap-x-4 gap-y-3">
           {ACCEPTED_FORMAT_CONFIGS.map((supportedFormatConfig, i) => (
