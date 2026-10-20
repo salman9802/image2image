@@ -11,7 +11,9 @@ const nextConfig: NextConfig = {
 
   env: {
     NEXT_PUBLIC_APP_VERSION: version
-  }
+  },
+
+  // basePath: "/image2image"
 
   // distDir: "build"
 

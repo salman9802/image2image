@@ -1,5 +1,6 @@
 "use client";
 
+import { getItem, setItem } from "@/lib/localstorage";
 import React from "react";
 
 // NOTE: when changing this value, also update root layout head's script tag
@@ -21,7 +22,8 @@ export function ThemeContextProvider({ children }: { children: React.ReactNode }
   const [theme, setTheme] = React.useState<TTheme>("dark");
 
   React.useEffect(() => {
-    const userTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    // const userTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    const userTheme = getItem(THEME_STORAGE_KEY);
 
     const initialTheme = (userTheme === "light" || userTheme === "dark")
       ? userTheme
@@ -37,7 +39,8 @@ export function ThemeContextProvider({ children }: { children: React.ReactNode }
     if (!isInitalized) return;
 
     document.documentElement.classList.toggle("dark", theme === "dark");
-    localStorage.setItem(THEME_STORAGE_KEY, theme);
+    // localStorage.setItem(THEME_STORAGE_KEY, theme);
+    setItem(THEME_STORAGE_KEY, theme);
 
     // if (theme === "light") {
     //   document.documentElement.classList.remove("dark");
