@@ -5,7 +5,7 @@ export const SITE = {
   name: "Image2Image",
   url: process.env.NODE_ENV === "production" ? "https://salman9802.github.io/image2image" : "http://localhost:3000",
   description: "Convert images between formats entirely in your browser. No uploads, no server. JPEG, PNG, WebP, AVIF, HEIC and more.",
-  ogImage: asset("/og.png"), // 
+  ogImage: "/og.png",
 }
 
 // Shared so child pages can reuse the image
