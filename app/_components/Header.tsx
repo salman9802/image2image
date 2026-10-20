@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "@/contexts/theme";
+import { asset } from "@/lib/asset";
 import { cn } from "cn";
 import { Moon, Sun } from "lucide-react";
 import Image from "next/image";
@@ -14,7 +15,7 @@ export function Header() {
     <div className="p-6 bg-primary flex justify-between items-center">
       <Link href="/" className="w-fit text-neutral-500">
         <Image
-          src="/image2image-logo.svg"
+          src={asset("/image2image-logo.svg")}
           alt="Logo"
           width="100"
           height="44"

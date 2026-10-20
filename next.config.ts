@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import { version } from "./package.json"
+import { BASE_PATH } from "./config";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -13,7 +14,7 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_APP_VERSION: version
   },
 
-  basePath: "/image2image"
+  basePath: BASE_PATH || undefined
 
   // distDir: "build"
 

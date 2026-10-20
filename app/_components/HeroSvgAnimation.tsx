@@ -12,6 +12,7 @@ import { inputFileSets, outputFileSets } from "../_constants";
 import SvgInputs from "./SvgInputs";
 import { Cog } from "lucide-react";
 import { useTheme } from "@/contexts/theme";
+import { asset } from "@/lib/asset";
 
 // Paths on the input side of the diagram (left)
 export const inputPaths = [
@@ -218,7 +219,7 @@ export default function HeroSvgAnimation() {
             "relative z-10 size-14 md:size-24",
             wiggleLogo && "animate-wiggle"
           )}
-          src={theme === "light" ? "/image2image-mark.svg" : "/image2image-mark-light.svg"}
+          src={theme === "light" ? asset("/image2image-mark.svg") : asset("/image2image-mark-light.svg")}
           alt="Image2Image logo"
           width={96}
           height={96}
