@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_APP_VERSION: version
   },
 
-  // basePath: "/image2image"
+  basePath: "/image2image"
 
   // distDir: "build"
 
