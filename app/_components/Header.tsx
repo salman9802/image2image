@@ -1,6 +1,6 @@
 "use client";
 
-import { useTheme } from "@/contexts/theme";
+import { transitionTheme, useTheme } from "@/contexts/theme";
 import { asset } from "@/lib/asset";
 import { cn } from "cn";
 import { Moon, Sun } from "lucide-react";
@@ -10,6 +10,10 @@ import { FaGithub } from "react-icons/fa";
 
 export function Header() {
   const { theme, setTheme } = useTheme();
+
+  const handleThemeChange = (event: React.MouseEvent<HTMLButtonElement>) => {
+    transitionTheme(event, theme, setTheme);
+  }
 
   return (
     <div className="p-6 bg-primary flex justify-between items-center">
@@ -36,15 +40,11 @@ export function Header() {
 
         <div className="relative w-fit bg-background p-3 flex gap-6 before:content-[''] before:absolute before:inset-y-0 before:w-1/2 before:left-0 before:z-10 before:bg-accent">
           <Sun
-            onClick={() => {
-              if (theme !== "light") setTheme("light");
-            }}
+            onClick={handleThemeChange}
             className={cn("size-5 z-50 cursor-pointer", theme === "light" && "bg-accent")}
           />
           <Moon
-            onClick={() => {
-              if (theme !== "dark") setTheme("dark");
-            }}
+            onClick={handleThemeChange}
             className={cn("size-5 z-50 cursor-pointer", theme === "dark" && "bg-accent")}
           />
         </div>

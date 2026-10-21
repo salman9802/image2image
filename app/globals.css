@@ -183,3 +183,17 @@
     @apply font-sans;
   }
 }
+
+/*
+ Theme Switching animation.
+ The new theme will appear above the old theme and expand from the clicked position.
+*/
+::view-transition-old(root) {
+  animation: none;
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  animation: none;
+  z-index: 2;
+}

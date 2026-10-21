@@ -70,3 +70,56 @@ export function useTheme() {
   }
   return themeContext;
 }
+
+// ========================= Smooth theme transitioning =========================
+
+export function transitionTheme(
+  event: React.MouseEvent<HTMLButtonElement>,
+  theme: TTheme,
+  setTheme: React.Dispatch<React.SetStateAction<TTheme>>
+) {
+  const nextTheme = theme === "dark" ? "light" : "dark";
+
+  const applyTheme = () => {
+    document.documentElement.classList.toggle(
+      "dark",
+      nextTheme === "dark"
+    );
+
+    setTheme(nextTheme);
+  }
+
+  // Check for browser support
+  if (
+    !document.startViewTransition ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    applyTheme();
+    return;
+  }
+
+  const { clientX: x, clientY: y } = event;
+  const radius = Math.hypot(
+    Math.max(x, window.innerWidth - x),
+    Math.max(y, window.innerHeight - y)
+  );
+
+  const transition = document.startViewTransition(() => {
+    applyTheme();
+  });
+
+  transition.ready.then(() => {
+    document.documentElement.animate({
+      clipPath: [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${radius}px at ${x}px ${y}px)`
+      ]
+    },
+      {
+        duration: 500,
+        easing: "ease-in",
+        pseudoElement: "::view-transition-new(root)"
+      }
+    );
+  });
+}
