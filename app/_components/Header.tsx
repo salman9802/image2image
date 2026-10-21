@@ -11,7 +11,7 @@ import { FaGithub } from "react-icons/fa";
 export function Header() {
   const { theme, setTheme } = useTheme();
 
-  const handleThemeChange = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleThemeChange = (event: React.MouseEvent<SVGSVGElement>) => {
     transitionTheme(event, theme, setTheme);
   }
 

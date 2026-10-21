@@ -74,7 +74,7 @@ export function useTheme() {
 // ========================= Smooth theme transitioning =========================
 
 export function transitionTheme(
-  event: React.MouseEvent<HTMLButtonElement>,
+  event: React.MouseEvent<any>,
   theme: TTheme,
   setTheme: React.Dispatch<React.SetStateAction<TTheme>>
 ) {
