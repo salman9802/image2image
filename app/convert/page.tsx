@@ -5,6 +5,7 @@ import { ConvertView } from "../_components/ConvertView";
 const description = "Convert JPEG, PNG, WebP, AVIF and HEIC images right in your browser. Your files never leave your device.";
 
 export const metadata: Metadata = {
+  authors: [{ name: SITE.author.name, url: SITE.author.url }],
   title: "Convert images", // renders as "Convert images | Image2Image"
   description,
   alternates: { canonical: "/convert" },

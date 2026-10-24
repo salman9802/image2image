@@ -29,6 +29,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
+  authors: [{ name: SITE.author.name, url: SITE.author.url }],
   title: {
     default: "Image2Image: convert images in your browser",
     template: "%s | Image2Image"

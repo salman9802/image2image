@@ -4,7 +4,7 @@ import { cp, rm, writeFile } from "node:fs/promises";
 await rm("docs", { recursive: true, force: true });
 // copy `out/` to `docs/`
 await cp("out", "docs", { recursive: true });
-// empty `.nojekyll` file in `docs/`
+// empty `.nojekyll` file in `docs/` so github doesn't block nested directories
 await writeFile("docs/.nojekyll", "");
 
 console.log("========== Static site prepared in docs/ ==========\n");
