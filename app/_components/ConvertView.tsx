@@ -141,7 +141,7 @@ export function ConvertView() {
             <div key={i} style={{
               boxShadow: "inset 0 1px 2px #ffffff50, 0 2px 4px #00000030, 0 4xp 8px #00000015"
             }} className="px-4 py-2 bg-primary/15 border border-primary/40 flex items-center gap-2">
-              <p className="text-primary font-mono">
+              <p className="text-primary dark:text-neutral-50 font-mono">
                 {supportedFormatConfig.extensions[0]}
               </p>
               {supportedFormatConfig.downloadRequiredForDecode && (
