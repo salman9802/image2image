@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   FaGithub,
   FaLinkedinIn,
@@ -35,6 +36,8 @@ export function Footer() {
         >
           @salman
         </a>
+        <Link href="/terms">Terms of Use</Link>
+        <Link href="/privacy">Privacy</Link>
       </div>
 
       <span className="mt-4 inline-flex justify-center gap-4 md:justify-start">
