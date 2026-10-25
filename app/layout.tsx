@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Header } from "./_components/Header";
 import { Footer } from "./_components/Footer";
 import { baseOpenGraph, SITE } from "@/lib/site";
+import UmamiScript from "@/components/analytics/umami-script";
 
 const loraHeading = Lora({ subsets: ['latin'], variable: '--font-heading' });
 
@@ -78,6 +79,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Footer />
           </ThemeContextProvider>
         </TooltipProvider>
+
+        <UmamiScript />
       </body>
     </html>
   );

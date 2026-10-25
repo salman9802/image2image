@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { TConvertUploadItem, useConvert } from "@/contexts/convert";
+import { trackEvent } from "@/lib/analytics";
 import { ACCEPTED_FORMAT_CONFIGS, detectFormat, DROPZONE_ACCEPTED_FILES, SUPPORTED_FORMAT_CONFIGS, TFormatConfig } from "@/lib/formats";
 import { cn, downloadBlob } from "@/lib/utils";
 import JSZip from "jszip";
@@ -78,6 +79,10 @@ export function ConvertView() {
       finishedUploads.map(upload => {
         const filename = upload.file.name.split(".").slice(0, -1).join(".");
         downloadBlob(upload.convertedBlob!, `${filename}.${upload.targetFormatConfig?.extensions[0]}`);
+        trackEvent("file_exported", {
+          format: upload.targetFormatConfig?.label ?? "",
+          tool: "image_converter"
+        });
       });
       context.setUploads([]);
 
@@ -96,6 +101,10 @@ export function ConvertView() {
         const filename = upload.file.name.split(".").slice(0, -1).join(".");
         // downloadBlob(upload.convertedBlob!, `${filename}.${upload.targetFormatConfig?.extensions[0]}`);
         zip.file(`${filename}.${upload.targetFormatConfig?.extensions[0]}`, upload.convertedBlob!);
+        trackEvent("file_exported_zip", {
+          format: upload.targetFormatConfig?.label ?? "",
+          tool: "image_converter"
+        });
       });
       const zipBlob = await zip.generateAsync({ type: "blob" });
       downloadBlob(zipBlob, "image2image-converted.zip");
